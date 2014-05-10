@@ -4,16 +4,16 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.common.ConfigCategory;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 public class IguanaConfig {
 
 	// hardness
     public static double hardnessMultiplier;
     public static boolean hardnessBlockListIsWhitelist;
-    public static List<Integer> hardnessBlockList = new ArrayList<Integer>();
+    public static List<String> hardnessBlockList = new ArrayList<String>();
 	
 	// stack sizes
 	public static boolean logStackSizeChanges;
@@ -116,8 +116,8 @@ public class IguanaConfig {
         hardnessBlockListIsWhitelist = hardnessBlockListIsWhitelistProperty.getBoolean(false);
 		
         Property hardnessBlockListProperty = config.get("hardness", "hardnessBlockList", new int[] {});
-        hardnessBlockListProperty.comment = "Block ids (each on seperate line) for the hardness whitelist/blacklist";
-        for (int i : hardnessBlockListProperty.getIntList()) hardnessBlockList.add(i);
+        hardnessBlockListProperty.comment = "Block names (each on seperate line) for the hardness whitelist/blacklist";
+        for (String i : hardnessBlockListProperty.getStringList()) hardnessBlockList.add(i);
         
         
         // stacksizes
@@ -449,17 +449,13 @@ public class IguanaConfig {
         tickRateEntityUpdateProperty.comment = "How often the speed of entities are calculated (in ticks).  Higher values reduce client-side CPU load but increase the chance of odd behavior";
         tickRateEntityUpdate = Math.max(tickRateEntityUpdateProperty.getInt(5), 1);
         tickRateEntityUpdateProperty.set(tickRateEntityUpdate);
-
-		
-    	
+        
 		// restrictions
-		ConfigCategory droprestrictionsCategory = config.getCategory("droprestrictions");
-
         Property restrictedDropsProperty = config.get("droprestrictions", "restrictedDrops", new String[] {});
-        restrictedDropsProperty.comment = "List of items/blocks to restrict from mob drops (separated by new line, format id:meta)";
+        restrictedDropsProperty.comment = "List of items/blocks to restrict from mob drops (separated by new line, format name:meta)";
         for (String i : restrictedDropsProperty.getStringList()) restrictedDrops.add(i);
         
-
-        config.save();
+        if(config.hasChanged())
+        	config.save();
 	}
 }

@@ -1,16 +1,5 @@
 package iguanaman.iguanatweaks;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.common.ForgeHooks;
-
 public class XpTweaks {
 
 	public static void init()
