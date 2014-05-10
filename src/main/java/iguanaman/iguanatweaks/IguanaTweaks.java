@@ -1,67 +1,30 @@
 package iguanaman.iguanatweaks;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockGravel;
-import net.minecraft.block.BlockSilverfish;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.command.ICommandManager;
-import net.minecraft.command.ServerCommandManager;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBucket;
-import net.minecraft.item.ItemBucketMilk;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
-import net.minecraft.src.ModLoader;
-import net.minecraftforge.client.GuiIngameForge;
-import net.minecraftforge.common.ConfigCategory;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.Property;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-import org.lwjgl.input.Keyboard;
 import org.modstats.ModstatInfo;
 import org.modstats.Modstats;
 
-import cpw.mods.fml.client.registry.KeyBindingRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.Mod.PostInit;
-import cpw.mods.fml.common.Mod.PreInit;
-import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.LanguageRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="1.6.X-1i", dependencies = "after:*")
-@NetworkMod(clientSideRequired=true, serverSideRequired=true, channels={"IguanaTweaks"}, packetHandler = IguanaPacketHandler.class)
 @ModstatInfo(prefix="igtweaks")
 public class IguanaTweaks {
 	
@@ -91,8 +54,8 @@ public class IguanaTweaks {
             if (IguanaConfig.lessObviousSilverfish)
             {
 	        	IguanaLog.log("Hiding silverfish");
-	            Block.silverfish.setHardness(1.5f).setResistance(10.0F).setStepSound(Block.soundStoneFootstep);
-	            MinecraftForge.setBlockHarvestLevel(Block.silverfish, "pickaxe", 0);
+	            Blocks.monster_egg.setHardness(1.5f).setResistance(10.0F).setStepSound(Block.soundTypeStone);
+	            Blocks.monster_egg.setHarvestLevel("pickaxe", 0);
             }
             
             
@@ -112,11 +75,11 @@ public class IguanaTweaks {
         		
         		if (IguanaConfig.torchesPerCoal != 4) {
         			IguanaLog.log("Changing torch recipe output");
-        			RecipeRemover.removeAnyRecipe(new ItemStack(Block.torchWood, 4));
-                    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Block.torchWood, IguanaConfig.torchesPerCoal), 
-                    		"c", "s", 'c', new ItemStack(Item.coal), 's', new ItemStack(Item.stick)));
-                    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Block.torchWood, IguanaConfig.torchesPerCoal), 
-                    		"c", "s", 'c', new ItemStack(Item.coal, 1, 1), 's', new ItemStack(Item.stick)));
+        			RecipeRemover.removeAnyRecipe(new ItemStack(Blocks.torch, 4));
+                    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), 
+                    		"c", "s", 'c', new ItemStack(Items.coal), 's', new ItemStack(Items.stick)));
+                    GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), 
+                    		"c", "s", 'c', new ItemStack(Items.coal, 1, 1), 's', new ItemStack(Items.stick)));
         		}
         }
 
@@ -140,7 +103,7 @@ public class IguanaTweaks {
 		
 		public static double getBlockWeight(Block block)
 		{
-			Material blockMaterial = block.blockMaterial;
+			Material blockMaterial = block.getMaterial();
         	
 	        if (blockMaterial == Material.iron || blockMaterial == Material.anvil) return 1.5d;
 	        else if (blockMaterial == Material.rock) return 1d;
