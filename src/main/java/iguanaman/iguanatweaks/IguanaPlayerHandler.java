@@ -56,7 +56,7 @@ public class IguanaPlayerHandler {
 		//split
 		if (IguanaConfig.respawnLocationRandomisationMax > 0)
 		{
-			IguanaLog.log("respawn code running onPlayerRespawn");
+			IguanaTweaks.log.info("respawn code running onPlayerRespawn");
 			respawnPlayer((EntityPlayerMP)event.player, IguanaConfig.respawnLocationRandomisationMin, IguanaConfig.respawnLocationRandomisationMax);
 
 			/*
@@ -187,7 +187,7 @@ public class IguanaPlayerHandler {
 			if (newY >= 0) 
 			{	
 				// good spawn location found
-				IguanaLog.log("good spawn found at " + newX + ", " + newY + ", " + newZ);
+				IguanaTweaks.log.info("Good spawn found at " + newX + ", " + newY + ", " + newZ);
 				return new ChunkCoordinates(newX, newY, newZ);
 			}
 		}

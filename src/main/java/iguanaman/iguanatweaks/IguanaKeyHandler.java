@@ -1,31 +1,15 @@
 package iguanaman.iguanatweaks;
 
-import java.util.EnumSet;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public class IguanaKeyHandler {
 
-	public IguanaKeyHandler(KeyBinding[] keyBindings, boolean[] repeatings) {
-		super(keyBindings, repeatings);
-	}
-
-	public IguanaKeyHandler(KeyBinding[] keyBindings) {
-		super(keyBindings);
-	}
-
-	@Override
-	public String getLabel() {
-        return "IguanaKeyHandler";
-	}
-
-	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
+	@SubscribeEvent
+	public void onkeyInput(KeyInputEvent event) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen == null)
 		{
@@ -33,14 +17,5 @@ public class IguanaKeyHandler {
 			NBTTagCompound tags = player.getEntityData();
 			tags.removeTag("HideHotbarDelay");
 		}
-	}
-
-	@Override
-	public void keyUp(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd) {}
-
-	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.CLIENT);
-
 	}
 }

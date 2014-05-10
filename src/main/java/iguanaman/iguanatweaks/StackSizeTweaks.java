@@ -1,8 +1,8 @@
 package iguanaman.iguanatweaks;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 
 public class StackSizeTweaks {
 
@@ -16,10 +16,12 @@ public class StackSizeTweaks {
         	{
         		
         		Item item = null;
+        		ItemStack stack = null;
         		try {
         			item = Item.itemsList[block.blockID];
+        			stack = new ItemStack(item);
         		} catch (Exception e) {
-        			
+        			e.printStackTrace();
         		}
 
         		if (item != null)
@@ -30,15 +32,15 @@ public class StackSizeTweaks {
 			        
 			        if (blockWeight > 0d) 
 			        {
-		        		size = Math.round((float) item.maxStackSize / ((float) IguanaConfig.blockStackSizeDividerMax * blockWeight));
-		        		if (size > item.maxStackSize / IguanaConfig.blockStackSizeDividerMin) size = item.maxStackSize / IguanaConfig.blockStackSizeDividerMin;
+		        		size = Math.round((float) item.getItemStackLimit(stack) / ((float) IguanaConfig.blockStackSizeDividerMax * blockWeight));
+		        		if (size > item.getItemStackLimit(stack) / IguanaConfig.blockStackSizeDividerMin) size = item.getItemStackLimit(stack) / IguanaConfig.blockStackSizeDividerMin;
 			        } else {
-		        		size = Math.round((float)item.maxStackSize / (float)IguanaConfig.blockStackSizeDividerMin);
+		        		size = Math.round((float)item.getItemStackLimit(stack) / (float)IguanaConfig.blockStackSizeDividerMin);
 			        }
 
 	        		if (size < 1) size = 1;
 	        		if (size > 64) size = 64;
-	        		if (size < item.maxStackSize) 
+	        		if (size < item.getItemStackLimit(stack)) 
 	        		{
 	            		if (IguanaConfig.logStackSizeChanges) IguanaTweaks.log.info("Reducing stack size of block " + item.getUnlocalizedName()  + " to " + size);
 	        			item.setMaxStackSize(size);
@@ -55,12 +57,13 @@ public class StackSizeTweaks {
         	{
         		if (item != null)
         		{
+        			ItemStack stack = new ItemStack(item);
         			if (item.itemID >= Block.blocksList.length) 
         			{
-        				int size = item.maxStackSize / IguanaConfig.itemStackSizeDivider;
+        				int size = item.getItemStackLimit(stack) / IguanaConfig.itemStackSizeDivider;
 		        		if (size < 1) size = 1;
 		        		if (size > 64) size = 64;
-		        		if (size < item.maxStackSize) 
+		        		if (size < item.getItemStackLimit(stack)) 
 		        		{
 		        			if (IguanaConfig.logStackSizeChanges) IguanaTweaks.log.info("Reducing stack size of item " + item.getUnlocalizedName()  + " to " + size);
 		        			item.setMaxStackSize(size);

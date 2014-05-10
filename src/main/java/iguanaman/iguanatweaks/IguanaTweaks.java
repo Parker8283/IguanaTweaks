@@ -102,7 +102,8 @@ public class IguanaTweaks {
 
 		MinecraftForge.EVENT_BUS.register(new IguanaEventHook());
 		FMLCommonHandler.instance().bus().register(new IguanaPlayerHandler());
-		proxy.registerTickHandler();
+		FMLCommonHandler.instance().bus().register(new IguanaTickHandler());
+		FMLCommonHandler.instance().bus().register(new IguanaKeyHandler());
 	}
 
 	public static double getBlockWeight(Block block)

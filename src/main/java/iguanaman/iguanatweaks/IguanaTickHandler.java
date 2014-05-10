@@ -1,6 +1,5 @@
 package iguanaman.iguanatweaks;
 
-import java.util.EnumSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
@@ -10,6 +9,10 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 
 import org.lwjgl.input.Keyboard;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
 
 public class IguanaTickHandler {
 	
@@ -32,22 +35,21 @@ public class IguanaTickHandler {
         this.keyDown = new boolean[keys.length];
 	}
 
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
-        keyTick(false);
-        
-		Iterator<Map.Entry<UUID, EntityData>> it = IguanaTweaks.entityDataMap.entrySet().iterator();
-		while (it.hasNext())
-		{
-			Map.Entry<UUID, EntityData> entry = it.next();
-        	EntityData data = entry.getValue();
-        	if (++data.age >= IguanaConfig.tickRateEntityUpdate) it.remove();
-		}
-	}
+	@SubscribeEvent
+	public void onPlayerTick(PlayerTickEvent event) {
+		if(event.phase == Phase.START) {
+			keyTick(false);
 
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-        keyTick(true);
+			Iterator<Map.Entry<UUID, EntityData>> it = IguanaTweaks.entityDataMap.entrySet().iterator();
+			while (it.hasNext())
+			{
+				Map.Entry<UUID, EntityData> entry = it.next();
+				EntityData data = entry.getValue();
+				if (++data.age >= IguanaConfig.tickRateEntityUpdate) it.remove();
+			}
+		}else{
+			keyTick(true);
+		}
 	}
 	
     private void keyTick(boolean tickEnd)
@@ -72,14 +74,4 @@ public class IguanaTickHandler {
             }
         }
     }
-
-	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.CLIENT);
-	}
-
-	@Override
-	public String getLabel() {
-        return "IguanaTickHandler";
-	}
 }
