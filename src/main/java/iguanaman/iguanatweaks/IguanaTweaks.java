@@ -12,9 +12,11 @@ import net.minecraft.potion.Potion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
+import org.apache.logging.log4j.Logger;
 import org.modstats.ModstatInfo;
 import org.modstats.Modstats;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -36,6 +38,8 @@ public class IguanaTweaks {
         @SidedProxy(clientSide="iguanaman.iguanatweaks.ClientProxy", serverSide="iguanaman.iguanatweaks.CommonProxy")
         public static CommonProxy proxy;
         
+        public static Logger log;
+        
         public static Potion poisonNew;
         public static Potion slowdownNew;
 
@@ -43,6 +47,7 @@ public class IguanaTweaks {
 
         @EventHandler
         public void preInit(FMLPreInitializationEvent event) {
+        	log = event.getModLog();
         	
         	IguanaConfig.Init(event.getSuggestedConfigurationFile());
         	
@@ -97,7 +102,7 @@ public class IguanaTweaks {
 			if (IguanaConfig.maxCarryWeight > 0) IguanaLog.log("Starting weight watcher");
 			
            MinecraftForge.EVENT_BUS.register(new IguanaEventHook());
-           GameRegistry.registerPlayerTracker(new IguanaPlayerHandler());
+           FMLCommonHandler.instance().bus().register(new IguanaPlayerHandler());
            proxy.registerTickHandler();
         }
 		

@@ -4,9 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraftforge.common.ConfigCategory;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 
 public class IguanaConfig {
 
@@ -449,17 +449,13 @@ public class IguanaConfig {
         tickRateEntityUpdateProperty.comment = "How often the speed of entities are calculated (in ticks).  Higher values reduce client-side CPU load but increase the chance of odd behavior";
         tickRateEntityUpdate = Math.max(tickRateEntityUpdateProperty.getInt(5), 1);
         tickRateEntityUpdateProperty.set(tickRateEntityUpdate);
-
-		
-    	
+        
 		// restrictions
-		ConfigCategory droprestrictionsCategory = config.getCategory("droprestrictions");
-
         Property restrictedDropsProperty = config.get("droprestrictions", "restrictedDrops", new String[] {});
         restrictedDropsProperty.comment = "List of items/blocks to restrict from mob drops (separated by new line, format id:meta)";
         for (String i : restrictedDropsProperty.getStringList()) restrictedDrops.add(i);
         
-
-        config.save();
+        if(config.hasChanged())
+        	config.save();
 	}
 }
