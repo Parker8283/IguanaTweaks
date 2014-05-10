@@ -10,21 +10,20 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 public class ClientProxy extends CommonProxy {
-       
-        @Override
-        public void registerRenderers() {}
-        
-        public void registerTickHandler() {
-            TickRegistry.registerTickHandler(new IguanaTickHandler(), Side.CLIENT);
-        }
-        
-        public void registerLocalization() {
-        	LanguageRegistry.instance().addStringLocalization("potion.newSlowdownPotion", "In Pain");
-        }
-        
-        public void disableExperienceHud()
-        {
-        	GuiIngameForge.renderExperiance = false;
-        }
-       
+
+	@Override
+	public void registerRenderers() {}
+
+	public void registerTickHandler() {
+		TickRegistry.registerTickHandler(new IguanaTickHandler(), Side.CLIENT);
+	}
+
+	public void registerLocalization() {
+		LanguageRegistry.instance().addStringLocalization("potion.newSlowdownPotion", "In Pain");
+	}
+
+	public void disableExperienceHud()
+	{
+		GuiIngameForge.renderExperiance = false;
+	}
 }

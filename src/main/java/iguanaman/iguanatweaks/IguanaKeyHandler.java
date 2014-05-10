@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import cpw.mods.fml.client.registry.KeyBindingRegistry.KeyHandler;
 import cpw.mods.fml.common.TickType;
 
-public class IguanaKeyHandler extends KeyHandler {
+public class IguanaKeyHandler {
 
 	public IguanaKeyHandler(KeyBinding[] keyBindings, boolean[] repeatings) {
 		super(keyBindings, repeatings);
@@ -25,8 +25,7 @@ public class IguanaKeyHandler extends KeyHandler {
 	}
 
 	@Override
-	public void keyDown(EnumSet<TickType> types, KeyBinding kb,
-			boolean tickEnd, boolean isRepeat) {
+	public void keyDown(EnumSet<TickType> types, KeyBinding kb, boolean tickEnd, boolean isRepeat) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (mc.currentScreen == null)
 		{
@@ -44,5 +43,4 @@ public class IguanaKeyHandler extends KeyHandler {
 		return EnumSet.of(TickType.CLIENT);
 
 	}
-
 }

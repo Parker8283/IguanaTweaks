@@ -11,7 +11,7 @@ public class StackSizeTweaks {
     	// BLOCKS
     	if (IguanaConfig.blockStackSizeDividerMax > 1) 
     	{
-    		IguanaLog.log("Reducing block stack sizes");
+    		IguanaTweaks.log.info("Reducing block stack sizes");
         	for (Block block : Block.blocksList)
         	{
         		
@@ -40,7 +40,7 @@ public class StackSizeTweaks {
 	        		if (size > 64) size = 64;
 	        		if (size < item.maxStackSize) 
 	        		{
-	            		if (IguanaConfig.logStackSizeChanges) IguanaLog.log("Reducing stack size of block " + item.getUnlocalizedName()  + " to " + size);
+	            		if (IguanaConfig.logStackSizeChanges) IguanaTweaks.log.info("Reducing stack size of block " + item.getUnlocalizedName()  + " to " + size);
 	        			item.setMaxStackSize(size);
 	        		}
         		}
@@ -50,7 +50,7 @@ public class StackSizeTweaks {
     	// ITEMS
     	if (IguanaConfig.itemStackSizeDivider > 1) 
     	{
-    		IguanaLog.log("Reducing item stack sizes");
+    		IguanaTweaks.log.info("Reducing item stack sizes");
         	for (Item item : Item.itemsList)
         	{
         		if (item != null)
@@ -62,7 +62,7 @@ public class StackSizeTweaks {
 		        		if (size > 64) size = 64;
 		        		if (size < item.maxStackSize) 
 		        		{
-		        			if (IguanaConfig.logStackSizeChanges) IguanaLog.log("Reducing stack size of item " + item.getUnlocalizedName()  + " to " + size);
+		        			if (IguanaConfig.logStackSizeChanges) IguanaTweaks.log.info("Reducing stack size of item " + item.getUnlocalizedName()  + " to " + size);
 		        			item.setMaxStackSize(size);
 		        		}
         			}

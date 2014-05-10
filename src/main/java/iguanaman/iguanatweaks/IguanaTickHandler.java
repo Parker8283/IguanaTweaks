@@ -2,23 +2,16 @@ package iguanaman.iguanatweaks;
 
 import java.util.EnumSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import org.lwjgl.input.Keyboard;
 
-public class IguanaTickHandler implements ITickHandler {
+public class IguanaTickHandler {
 	
 	public static int[] keys = { 
 		Keyboard.KEY_0, 
@@ -89,5 +82,4 @@ public class IguanaTickHandler implements ITickHandler {
 	public String getLabel() {
         return "IguanaTickHandler";
 	}
-
 }
