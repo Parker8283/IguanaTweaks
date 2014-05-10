@@ -13,7 +13,7 @@ public class IguanaConfig {
 	// hardness
     public static double hardnessMultiplier;
     public static boolean hardnessBlockListIsWhitelist;
-    public static List<Integer> hardnessBlockList = new ArrayList<Integer>();
+    public static List<String> hardnessBlockList = new ArrayList<String>();
 	
 	// stack sizes
 	public static boolean logStackSizeChanges;
@@ -116,8 +116,8 @@ public class IguanaConfig {
         hardnessBlockListIsWhitelist = hardnessBlockListIsWhitelistProperty.getBoolean(false);
 		
         Property hardnessBlockListProperty = config.get("hardness", "hardnessBlockList", new int[] {});
-        hardnessBlockListProperty.comment = "Block ids (each on seperate line) for the hardness whitelist/blacklist";
-        for (int i : hardnessBlockListProperty.getIntList()) hardnessBlockList.add(i);
+        hardnessBlockListProperty.comment = "Block names (each on seperate line) for the hardness whitelist/blacklist";
+        for (String i : hardnessBlockListProperty.getStringList()) hardnessBlockList.add(i);
         
         
         // stacksizes
@@ -452,7 +452,7 @@ public class IguanaConfig {
         
 		// restrictions
         Property restrictedDropsProperty = config.get("droprestrictions", "restrictedDrops", new String[] {});
-        restrictedDropsProperty.comment = "List of items/blocks to restrict from mob drops (separated by new line, format id:meta)";
+        restrictedDropsProperty.comment = "List of items/blocks to restrict from mob drops (separated by new line, format name:meta)";
         for (String i : restrictedDropsProperty.getStringList()) restrictedDrops.add(i);
         
         if(config.hasChanged())

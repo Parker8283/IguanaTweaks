@@ -13,8 +13,6 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import org.apache.logging.log4j.Logger;
-import org.modstats.ModstatInfo;
-import org.modstats.Modstats;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -26,8 +24,8 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="1.6.X-1i")
-@ModstatInfo(prefix="igtweaks")
+@Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="@MOD_VERSION@")
+//@ModstatInfo(prefix="igtweaks")
 public class IguanaTweaks {
 
 	// The instance of your mod that Forge uses.
@@ -51,9 +49,7 @@ public class IguanaTweaks {
 
 		IguanaConfig.Init(event.getSuggestedConfigurationFile());
 
-		slowdownNew = new Potion(IguanaConfig.damageSlowdownPotionId, true, 5926017).setIconIndex(1, 0).setPotionName("potion.newSlowdownPotion");
-		proxy.registerLocalization();
-
+		slowdownNew = new IguanaPotion(IguanaConfig.damageSlowdownPotionId, true, 5926017);
 
 		// LESS OBVIOUS SILVERFISH
 		if (IguanaConfig.lessObviousSilverfish) {
@@ -68,14 +64,14 @@ public class IguanaTweaks {
 		{
 			log.info("Altering poison");
 			Potion.potionTypes[19] = null;
-			poisonNew = (new IguanaPotion(19, true, 5149489)).setPotionName("potion.poison").setIconIndex(6, 0).setEffectiveness(0.25D);
+			poisonNew = (new IguanaPotion(19, true, 5149489)).setPotionName("potion.poison");
 		}
 
 	}
 
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
-		Modstats.instance().getReporter().registerMod(this);
+//		Modstats.instance().getReporter().registerMod(instance);
 
 		if (IguanaConfig.torchesPerCoal != 4) {
 			log.info("Changing torch recipe output");

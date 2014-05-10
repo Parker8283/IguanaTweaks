@@ -6,7 +6,7 @@
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "http://www.minecraftforum.net/topic/1958862-",
-  "authorList": ["iguana_man"]
+  "authorList": ["iguana_man"],
   "credits": "Created by iguana_man, updated to 1.7 and maintained by Parker8283.",
   "logoFile": "",
   "screenshots": [],

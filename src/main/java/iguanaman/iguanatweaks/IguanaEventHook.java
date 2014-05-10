@@ -16,10 +16,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
@@ -329,9 +330,9 @@ public class IguanaEventHook {
 
 						if (!isPlayer && 
 								(
-										IguanaConfig.restrictedDrops.contains(Integer.toString(item.itemID))
+										IguanaConfig.restrictedDrops.contains(Item.itemRegistry.getNameForObject(item))
 										|| 
-										IguanaConfig.restrictedDrops.contains(Integer.toString(item.itemID) + ":" + Integer.toString(item.getItemDamage())))
+										IguanaConfig.restrictedDrops.contains(Item.itemRegistry.getNameForObject(item) + ":" + Integer.toString(item.getItemDamage())))
 								)
 						{
 							i.remove();
@@ -426,12 +427,12 @@ public class IguanaEventHook {
 			event.result = EnumStatus.OTHER_PROBLEM;
 			if (IguanaConfig.disableSettingSpawn)
 			{
-				event.entityPlayer.addChatMessage(new ChatComponentText("Has no-one told you?  Beds are just decorative"));
+				event.entityPlayer.addChatMessage(new ChatComponentTranslation("msg.decorativeBeds"));
 			}
 			else
 			{
 				event.entityPlayer.setSpawnChunk(new ChunkCoordinates(event.x, event.y, event.z), false, event.entityPlayer.worldObj.provider.dimensionId);
-				event.entityPlayer.addChatMessage(new ChatComponentText("Your spawn location has been set, enjoy the night"));
+				event.entityPlayer.addChatMessage(new ChatComponentTranslation("msg.setNoSleep"));
 			}
 		}
 	}
@@ -496,8 +497,8 @@ public class IguanaEventHook {
 	{
 		if (IguanaConfig.hardnessMultiplier != 1d && event.entityPlayer != null && event.block != null)
 		{
-			if ((IguanaConfig.hardnessBlockListIsWhitelist && IguanaConfig.hardnessBlockList.contains(event.block.blockID))
-					|| (!IguanaConfig.hardnessBlockListIsWhitelist && !IguanaConfig.hardnessBlockList.contains(event.block.blockID))
+			if ((IguanaConfig.hardnessBlockListIsWhitelist && IguanaConfig.hardnessBlockList.contains(event.block))
+					|| (!IguanaConfig.hardnessBlockListIsWhitelist && !IguanaConfig.hardnessBlockList.contains(event.block))
 					)
 			{
 				if (IguanaConfig.hardnessMultiplier == 0d)

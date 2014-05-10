@@ -4,7 +4,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -99,7 +99,7 @@ public class IguanaPlayerHandler {
 			 */
 
 			// send a msg to the player
-			event.player.addChatMessage(new ChatComponentText("You regain conciousness, confused as to where you are"));
+			event.player.addChatMessage(new ChatComponentTranslation("msg.randReSpawn"));
 		}
 
 
@@ -143,7 +143,7 @@ public class IguanaPlayerHandler {
 					event.player.setSpawnChunk(null, false, event.player.dimension);
 					if (IguanaConfig.respawnLocationRandomisationMax == 0)
 					{
-						event.player.addChatMessage(new ChatComponentText("You awake to find your bed smashed to pieces"));
+						event.player.addChatMessage(new ChatComponentTranslation("msg.bedGone"));
 					}
 				}
 			}
