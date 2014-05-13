@@ -1,5 +1,6 @@
 package iguanaman.iguanatweaks;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import net.minecraft.block.Block;
@@ -521,6 +522,7 @@ public class IguanaEventHook {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@SideOnly(Side.CLIENT)
 	@SubscribeEvent
 	public void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
@@ -563,12 +565,26 @@ public class IguanaEventHook {
 			GL11.glDisable(GL11.GL_BLEND);
 			GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 			RenderHelper.enableGUIStandardItemLighting();
-
-			for (int i = 0; i < 9; ++i)
-			{
-				int x = width / 2 - 90 + i * 20 + 2;
-				int z = height - 16 - 3;
-				g.renderInventorySlot(i, x, z, event.partialTicks);
+			
+			Class guiingame = null;
+			try {
+				guiingame = Class.forName("net.minecraft.client.gui.GuiIngame");
+				
+				Method renderInvSlot = null;
+				if(guiingame != null) {
+					renderInvSlot = guiingame.getDeclaredMethod("renderInventorySlot", int.class, int.class, int.class, float.class);
+					renderInvSlot.setAccessible(true);
+					if(renderInvSlot != null) {
+						for (int i = 0; i < 9; ++i) {
+							int x = width / 2 - 90 + i * 20 + 2;
+							int z = height - 16 - 3;
+							renderInvSlot.invoke(guiingame.newInstance(), i, x, z, event.partialTicks);
+						}
+					}
+				}
+			} catch(Exception ex) {
+				IguanaTweaks.log.fatal("Failed to access renderInventorySlot.");
+				ex.printStackTrace();
 			}
 
 			RenderHelper.disableStandardItemLighting();
