@@ -66,7 +66,7 @@ public class IguanaEventHook {
 				EntityPlayer player = (EntityPlayer)entity;
 				if (entity.getAge() % IguanaConfig.tickRateEntityUpdate == 0 && IguanaConfig.increasedStepHeight) player.stepHeight = 1f;
 				if (player.capabilities.isCreativeMode) isCreative = true;
-				if (player.jumpTicks > 0) jumping = true;
+				if (player.isAirBorne) jumping = true;
 
 				NBTTagCompound tags = player.getEntityData();
 
