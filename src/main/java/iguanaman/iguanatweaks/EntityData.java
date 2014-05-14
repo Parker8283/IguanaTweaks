@@ -2,10 +2,10 @@ package iguanaman.iguanatweaks;
 
 public class EntityData {
 
-	public double currentWeight;
-	public double maxWeight;
-	public double encumberance;
-	public double armour;
+	public double currentWeight = 0;
+	public double maxWeight = 0;
+	public double encumberance = 0;
+	public double armour = 0;
 	public double speedModifier = 0;
 	public int age = 0;
 	

@@ -11,7 +11,7 @@ import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.RenderTickEvent;
 
 public class IguanaTickHandler {
 	
@@ -35,7 +35,7 @@ public class IguanaTickHandler {
 	}
 
 	@SubscribeEvent
-	public void onPlayerTick(PlayerTickEvent event) {
+	public void onPlayerTick(RenderTickEvent event) {
 		if(event.phase == Phase.START) {
 			keyTick(false);
 
