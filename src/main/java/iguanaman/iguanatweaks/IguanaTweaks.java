@@ -1,5 +1,6 @@
 package iguanaman.iguanatweaks;
 
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.block.Block;
@@ -40,7 +41,7 @@ public class IguanaTweaks {
 	public static Potion poisonNew;
 	public static Potion slowdownNew;
 
-	public static ConcurrentHashMap<Integer, EntityData> entityDataMap = new ConcurrentHashMap<Integer, EntityData>();
+	public static ConcurrentHashMap<UUID, EntityData> entityDataMap = new ConcurrentHashMap<UUID, EntityData>();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

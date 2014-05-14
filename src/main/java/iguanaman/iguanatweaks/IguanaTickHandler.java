@@ -2,6 +2,7 @@ package iguanaman.iguanatweaks;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
@@ -39,10 +40,10 @@ public class IguanaTickHandler {
 		if(event.phase == Phase.START) {
 			keyTick(false);
 
-			Iterator<Map.Entry<Integer, EntityData>> it = IguanaTweaks.entityDataMap.entrySet().iterator();
+			Iterator<Map.Entry<UUID, EntityData>> it = IguanaTweaks.entityDataMap.entrySet().iterator();
 			while (it.hasNext())
 			{
-				Map.Entry<Integer, EntityData> entry = it.next();
+				Map.Entry<UUID, EntityData> entry = it.next();
 				EntityData data = entry.getValue();
 				if (++data.age >= IguanaConfig.tickRateEntityUpdate) it.remove();
 			}
