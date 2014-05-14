@@ -128,9 +128,9 @@ public class IguanaEventHook {
 				}
 			}
 
-			if (IguanaTweaks.entityDataMap.containsKey(entity.getUniqueID()))
+			if (IguanaTweaks.entityDataMap.containsKey(entity.getEntityId()))
 			{
-				speedModifier = IguanaTweaks.entityDataMap.get(entity.getUniqueID()).speedModifier;
+				speedModifier = IguanaTweaks.entityDataMap.get(entity.getEntityId()).speedModifier;
 			}
 			else
 			{
@@ -258,7 +258,7 @@ public class IguanaEventHook {
 				 */
 
 				EntityData entityData = new EntityData(speedModifier, weight, maxWeight, slownessWeight, slownessArmour);
-				IguanaTweaks.entityDataMap.put(entity.getUniqueID(), entityData);
+				IguanaTweaks.entityDataMap.put(entity.getEntityId(), entityData);
 			}
 
 			if (speedModifier != 1d && !jumping)
