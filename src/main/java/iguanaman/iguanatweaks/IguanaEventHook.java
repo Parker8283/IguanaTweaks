@@ -128,9 +128,12 @@ public class IguanaEventHook {
 				}
 			}
 
-			if (IguanaTweaks.entityDataMap.containsKey(entity.getUniqueID()))
-			{
-				speedModifier = IguanaTweaks.entityDataMap.get(entity.getUniqueID()).speedModifier;
+			if (IguanaTweaks.entityDataMap.containsKey(entity.getUniqueID())) {
+				if(IguanaTweaks.entityDataMap.get(entity.getUniqueID()) != null) {
+					speedModifier = IguanaTweaks.entityDataMap.get(entity.getUniqueID()).speedModifier;
+				} else {
+					IguanaTweaks.log.error("There's an entry in entityDataMap == null. That's bad.");
+				}
 			}
 			else
 			{
