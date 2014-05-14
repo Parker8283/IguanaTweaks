@@ -1,6 +1,5 @@
 package iguanaman.iguanatweaks;
 
-import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,12 +39,11 @@ public class IguanaTickHandler {
 		if(event.phase == Phase.START) {
 			keyTick(false);
 
-			Iterator<Map.Entry<UUID, EntityData>> it = IguanaTweaks.entityDataMap.entrySet().iterator();
-			while (it.hasNext())
+			for(Map.Entry<UUID, EntityData> entry : IguanaTweaks.entityDataMap.entrySet())
 			{
-				Map.Entry<UUID, EntityData> entry = it.next();
 				EntityData data = entry.getValue();
-				if (++data.age >= IguanaConfig.tickRateEntityUpdate) it.remove();
+				if (++data.age >= IguanaConfig.tickRateEntityUpdate)
+					IguanaTweaks.entityDataMap.remove(entry.getKey());
 			}
 		}else{
 			keyTick(true);
