@@ -1,5 +1,6 @@
 package iguanaman.iguanatweaks;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
@@ -67,7 +68,21 @@ public class IguanaEventHook {
 				EntityPlayer player = (EntityPlayer)entity;
 				if (entity.getAge() % IguanaConfig.tickRateEntityUpdate == 0 && IguanaConfig.increasedStepHeight) player.stepHeight = 1f;
 				if (player.capabilities.isCreativeMode) isCreative = true;
-				if (player.isAirBorne) jumping = true;
+				Class<?> livingBase = null;
+				try{
+					livingBase = Class.forName("net.minecraft.entity.EntityLivingBase");
+					Field jumpTicks = null;
+					if(livingBase != null) {
+						jumpTicks = livingBase.getDeclaredField("jumpTicks");
+						jumpTicks.setAccessible(true);
+						if(jumpTicks != null) {
+							if(jumpTicks.getInt(entity) > 0) jumping = true;
+						}
+					}
+				}catch(Exception ex){
+					IguanaTweaks.log.fatal("Could not access jumpTick in net.minecraft.entity.EntityLivingBase.");
+					ex.printStackTrace();
+				}
 
 				NBTTagCompound tags = player.getEntityData();
 
