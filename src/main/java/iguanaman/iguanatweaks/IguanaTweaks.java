@@ -25,7 +25,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 @Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="@MOD_VERSION@")
-//@ModstatInfo(prefix="igtweaks")
 public class IguanaTweaks {
 
     // The instance of your mod that Forge uses.
@@ -71,8 +70,6 @@ public class IguanaTweaks {
 
     @EventHandler
     public void load(FMLInitializationEvent event) {
-	//		Modstats.instance().getReporter().registerMod(instance);
-
 	if (IguanaConfig.torchesPerCoal != 4) {
 	    log.info("Changing torch recipe output");
 	    RecipeRemover.removeAnyRecipe(new ItemStack(Blocks.torch, 4));
@@ -113,5 +110,4 @@ public class IguanaTweaks {
 	else if (block.isOpaqueCube()) return 1d / 16d;
 	else return 1d / 64d; // item like block
     }
-
 }
