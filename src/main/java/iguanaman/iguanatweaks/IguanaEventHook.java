@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -50,6 +51,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class IguanaEventHook {
 
+    private static Field jumpField;
+    private static boolean triedField;
+
     @SubscribeEvent
     public void onLivingUpdate(LivingUpdateEvent event) {
 
@@ -68,21 +72,26 @@ public class IguanaEventHook {
 		EntityPlayer player = (EntityPlayer)entity;
 		if (entity.getAge() % IguanaConfig.tickRateEntityUpdate == 0 && IguanaConfig.increasedStepHeight) player.stepHeight = 1f;
 		if (player.capabilities.isCreativeMode) isCreative = true;
-		Class<?> livingBase = null;
-		try{
-		    livingBase = Class.forName("net.minecraft.entity.EntityLivingBase");
-		    Field jumpTicks = null;
-		    if(livingBase != null) {
-			jumpTicks = livingBase.getDeclaredField("jumpTicks");
-			jumpTicks.setAccessible(true);
-			if(jumpTicks != null) {
-			    if(jumpTicks.getInt(entity) > 0) jumping = true;
-			}
-		    }
-		}catch(Exception ex){
-		    IguanaTweaks.log.fatal("Could not access jumpTick in net.minecraft.entity.EntityLivingBase.");
-		    ex.printStackTrace();
-		}
+
+        if (jumpField == null && !triedField)
+        {
+            try {
+                jumpField = ReflectionHelper.findField(EntityLivingBase.class, "jumpTicks", "field_70773_bE", "bq");
+                jumpField.setAccessible(true);
+            } catch (Exception e) {
+                IguanaTweaks.log.fatal("Could not access jumpTick in net.minecraft.entity.EntityLivingBase.");
+            }
+            triedField = true;
+        }
+
+        if (jumpField != null)
+            try {
+                if (jumpField != null) {
+                    if (jumpField.getInt(entity) > 0) jumping = true;
+                }
+            } catch (Exception e)
+            {
+            }
 
 		NBTTagCompound tags = player.getEntityData();
 
