@@ -16,7 +16,6 @@ public class StackSizeTweaks {
 			{
 				if(obj instanceof Block) {
 					Block block = (Block)obj;
-					IguanaTweaks.log.info(block.getUnlocalizedName());
 					Item item = null;
 					ItemStack stack = null;
 					try {
@@ -60,7 +59,6 @@ public class StackSizeTweaks {
 			{
 				if(obj instanceof Item) {
 					Item item = (Item)obj;
-					IguanaTweaks.log.info(item.getUnlocalizedName());
 					if (item != null)
 					{
 						ItemStack stack = new ItemStack(item);
