@@ -39,7 +39,11 @@ public class IguanaTweaks {
 
 	public static Potion poisonNew;
 	public static Potion slowdownNew;
-
+	
+	/**
+	 * @deprecated Switching over to IExtendedEntityProperties
+	 */
+	@Deprecated
 	public static ConcurrentHashMap<UUID, EntityData> entityDataMap = new ConcurrentHashMap<UUID, EntityData>();
 
 	@EventHandler
