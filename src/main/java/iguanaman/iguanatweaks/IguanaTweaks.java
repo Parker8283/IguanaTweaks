@@ -24,7 +24,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.1.1060,);")
+@Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.2.1121,);")
 public class IguanaTweaks {
 
 	// The instance of your mod that Forge uses.
