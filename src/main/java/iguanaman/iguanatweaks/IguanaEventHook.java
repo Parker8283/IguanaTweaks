@@ -31,6 +31,7 @@ import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.MouseEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
+import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -84,14 +85,15 @@ public class IguanaEventHook {
 					triedField = true;
 				}
 
-				if (jumpField != null)
+				if (jumpField != null) {
 					try {
 						if (jumpField != null) {
 							if (jumpField.getInt(entity) > 0) jumping = true;
 						}
-					} catch (Exception e)
-					{
+					} catch (Exception e){
+						e.printStackTrace();
 					}
+				}
 
 				NBTTagCompound tags = player.getEntityData();
 
@@ -687,4 +689,9 @@ public class IguanaEventHook {
     	}
 
     }*/
+
+	@SubscribeEvent
+	public void onEntityConstructed(EntityConstructing event) {
+
+	}
 }
