@@ -1,8 +1,5 @@
 package iguanaman.iguanatweaks;
 
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -39,12 +36,6 @@ public class IguanaTweaks {
 
 	public static Potion poisonNew;
 	public static Potion slowdownNew;
-	
-	/**
-	 * @deprecated Switching over to an instance of IExtendedEntityProperties
-	 */
-	@Deprecated
-	public static ConcurrentHashMap<UUID, EntityData> entityDataMap = new ConcurrentHashMap<UUID, EntityData>();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {

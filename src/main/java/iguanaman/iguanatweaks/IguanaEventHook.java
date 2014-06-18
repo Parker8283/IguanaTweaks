@@ -1,10 +1,8 @@
 package iguanaman.iguanatweaks;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -52,9 +50,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class IguanaEventHook {
 
-	private static Field jumpField;
-	private static boolean triedField;
-
 	@SubscribeEvent
 	public void onLivingUpdate(LivingUpdateEvent event) {
 
@@ -66,34 +61,12 @@ public class IguanaEventHook {
 			double speedModifier = 1d;
 
 			boolean isCreative = false;
-			boolean jumping = false;
 
 			if (entity instanceof EntityPlayer)
 			{
 				EntityPlayer player = (EntityPlayer)entity;
 				if (entity.getAge() % IguanaConfig.tickRateEntityUpdate == 0 && IguanaConfig.increasedStepHeight) player.stepHeight = 1f;
 				if (player.capabilities.isCreativeMode) isCreative = true;
-
-				if (jumpField == null && !triedField)
-				{
-					try {
-						jumpField = ReflectionHelper.findField(EntityLivingBase.class, "jumpTicks", "field_70773_bE", "bq");
-						jumpField.setAccessible(true);
-					} catch (Exception e) {
-						IguanaTweaks.log.fatal("Could not access jumpTick in net.minecraft.entity.EntityLivingBase.");
-					}
-					triedField = true;
-				}
-
-				if (jumpField != null) {
-					try {
-						if (jumpField != null) {
-							if (jumpField.getInt(entity) > 0) jumping = true;
-						}
-					} catch (Exception e){
-						e.printStackTrace();
-					}
-				}
 
 				NBTTagCompound tags = player.getEntityData();
 
@@ -154,148 +127,132 @@ public class IguanaEventHook {
 				}
 			}
 
-			if (IguanaTweaks.entityDataMap.containsKey(entity.getUniqueID())) {
-				if(IguanaTweaks.entityDataMap.get(entity.getUniqueID()) != null) {
-					speedModifier = IguanaTweaks.entityDataMap.get(entity.getUniqueID()).speedModifier;
-				} else {
-					IguanaTweaks.log.error("There's an entry in entityDataMap == null. That's bad.");
-				}
-			}
-			else
+			double slownessWeight = 0d;
+			double slownessArmour = (double)entity.getTotalArmorValue() * IguanaConfig.armorWeight;
+			double weight = 0d;
+			double maxWeight = 0d;
+
+			if (!isCreative)
 			{
-				double slownessWeight = 0d;
-				double slownessArmour = (double)entity.getTotalArmorValue() * IguanaConfig.armorWeight;
-				double weight = 0d;
-				double maxWeight = 0d;
+				int slownessHurt = 0;
+				int slownessTerrain = 0;
+				boolean onIce = false;
 
-				if (!isCreative)
+				//Stun effect
+				PotionEffect currentEffect = entity.getActivePotionEffect(IguanaTweaks.slowdownNew);
+				if (currentEffect != null)
 				{
-					int slownessHurt = 0;
-					int slownessTerrain = 0;
-					boolean onIce = false;
+					slownessHurt += Math.round(100f * ((float)currentEffect.getDuration() / (float)currentEffect.getAmplifier()));
+				}
 
-					//Stun effect
-					PotionEffect currentEffect = entity.getActivePotionEffect(IguanaTweaks.slowdownNew);
-					if (currentEffect != null)
-					{
-						slownessHurt += Math.round(100f * ((float)currentEffect.getDuration() / (float)currentEffect.getAmplifier()));
-					}
+				//Walking block
+				if (!entity.isInWater() && IguanaConfig.terrainSlowdownPercentage > 0)
+				{
+					double posmod = 0d;
 
-					//Walking block
-					if (!entity.isInWater() && IguanaConfig.terrainSlowdownPercentage > 0)
-					{
-						double posmod = 0d;
+					if(entity instanceof EntityClientPlayerMP) posmod = 1.62d;
 
-						if(entity instanceof EntityClientPlayerMP) posmod = 1.62d;
+					int posX = (int)entity.posX;
+					int posY = (int)(entity.posY - posmod - 1d);
+					int posZ = (int)entity.posZ;
+					if (posX < 0) --posX;
+					if (posY < 0) --posY;
+					if (posZ < 0) --posZ;
 
-						int posX = (int)entity.posX;
-						int posY = (int)(entity.posY - posmod - 1d);
-						int posZ = (int)entity.posZ;
-						if (posX < 0) --posX;
-						if (posY < 0) --posY;
-						if (posZ < 0) --posZ;
-
-						/*
+					/*
 						if (entity instanceof EntityPlayer) 
 							FMLLog.warning("posY" + Double.toString(entity.posY - posmod) + " class" + entity.getClass().toString());
 							//FMLLog.warning("posX" + posX + " posY" + posY + " posZ" + posZ);
-						 */
+					 */
 
-						Material blockOnMaterial = world.getBlock(posX, posY, posZ).getMaterial();
-						Material blockInMaterial = world.getBlock(posX, posY + 1, posZ).getMaterial();
+					Material blockOnMaterial = world.getBlock(posX, posY, posZ).getMaterial();
+					Material blockInMaterial = world.getBlock(posX, posY + 1, posZ).getMaterial();
 
-						if (blockOnMaterial == Material.grass || blockOnMaterial == Material.ground) slownessTerrain = IguanaConfig.terrainSlowdownOnDirt; 
-						else if (blockOnMaterial == Material.sand) slownessTerrain = IguanaConfig.terrainSlowdownOnSand;
-						else if (blockOnMaterial == Material.leaves || blockOnMaterial == Material.plants 
-								|| blockOnMaterial == Material.vine) slownessTerrain = IguanaConfig.terrainSlowdownOnPlant;
-						else if (blockOnMaterial == Material.ice) slownessTerrain = IguanaConfig.terrainSlowdownOnIce;
-						else if (blockOnMaterial == Material.snow) slownessTerrain = IguanaConfig.terrainSlowdownOnSnow;
+					if (blockOnMaterial == Material.grass || blockOnMaterial == Material.ground) slownessTerrain = IguanaConfig.terrainSlowdownOnDirt; 
+					else if (blockOnMaterial == Material.sand) slownessTerrain = IguanaConfig.terrainSlowdownOnSand;
+					else if (blockOnMaterial == Material.leaves || blockOnMaterial == Material.plants 
+							|| blockOnMaterial == Material.vine) slownessTerrain = IguanaConfig.terrainSlowdownOnPlant;
+					else if (blockOnMaterial == Material.ice) slownessTerrain = IguanaConfig.terrainSlowdownOnIce;
+					else if (blockOnMaterial == Material.snow) slownessTerrain = IguanaConfig.terrainSlowdownOnSnow;
 
-						if (blockInMaterial == Material.snow) slownessTerrain += IguanaConfig.terrainSlowdownInSnow;
-						else if (blockInMaterial == Material.vine || blockOnMaterial == Material.plants ) slownessTerrain += IguanaConfig.terrainSlowdownInPlant;
+					if (blockInMaterial == Material.snow) slownessTerrain += IguanaConfig.terrainSlowdownInSnow;
+					else if (blockInMaterial == Material.vine || blockOnMaterial == Material.plants ) slownessTerrain += IguanaConfig.terrainSlowdownInPlant;
 
-						if (blockOnMaterial == Material.ice) onIce = true;
+					if (blockOnMaterial == Material.ice) onIce = true;
 
-						slownessTerrain = Math.round((float)slownessTerrain * ((float)IguanaConfig.terrainSlowdownPercentage / 100f));
-					}
-
-
-					if (entity instanceof EntityPlayer && IguanaConfig.maxCarryWeight > 0) 
-					{
-						EntityPlayer player = (EntityPlayer)entity;
-
-						for (Object slotObject : player.inventoryContainer.inventorySlots) 
-						{
-							Slot slot = (Slot)slotObject;
-							if (slot.getHasStack())
-							{
-								double toAdd = 0d;	
-
-								ItemStack stack = slot.getStack();
-								Block block = null;
-								try {
-									block = Block.getBlockFromItem(stack.getItem());
-								} catch (Exception e) {
-								}
-
-								if (block != null) {
-									toAdd = IguanaTweaks.getBlockWeight(block) * (double)IguanaConfig.rockWeight;
-								} else { //is item
-									toAdd = 1d / 64d;
-								}
-								weight += toAdd * (double)stack.stackSize;
-							}
-						}
-
-						// Calculate max weight
-						maxWeight = (double)IguanaConfig.maxCarryWeight;
-
-						slownessWeight = (weight / maxWeight) *  100d;
-
-						if (slownessWeight > 0) player.addExhaustion(0.0001F * Math.round(slownessWeight));
-					}
-
-					if (slownessArmour > 100d) slownessArmour = 100d;
-					if (slownessHurt > 100) slownessHurt = 100;
-					if (slownessTerrain > 100) slownessTerrain = 100;
-					if (slownessWeight > 100d) slownessWeight = 100d;
-					double speedModifierArmour = (100d - slownessArmour) / 100d;
-					double speedModifierHurt = (100d - (double)slownessHurt) / 100d;
-					double speedModifierTerrain = (100d - (double)slownessTerrain) / 100d;
-					double speedModifierWeight = (100d - slownessWeight) / 100d;
-
-					//if (entity instanceof EntityPlayer) FMLLog.warning("speedModifier" + Double.toString(speedModifier));
-					//if (world.isRemote && entity instanceof EntityPlayer) FMLLog.warning("ssp" + Double.toString(speedModifier));
-					//if (!world.isRemote && entity instanceof EntityPlayer) FMLLog.warning("smp" + Double.toString(speedModifier));
-
-					speedModifier = speedModifierArmour * speedModifierHurt * speedModifierTerrain * speedModifierWeight;
-
-					if (entity instanceof EntityPlayerSP) 
-					{
-						EntityPlayerSP playerSP = (EntityPlayerSP)entity;
-						if (playerSP.moveForward < 0f) speedModifier *= 0.5d;
-					}
-					if (onIce) speedModifier = 0.8d + (speedModifier / 5d);
-
-					//if (entity instanceof EntityPlayer) FMLLog.warning("onIce" + Boolean.toString(onIce) + " mod" + Double.toString(speedModifier));
-
+					slownessTerrain = Math.round((float)slownessTerrain * ((float)IguanaConfig.terrainSlowdownPercentage / 100f));
 				}
 
-				/*
-				if (entity instanceof EntityPlayer)
-					IguanaLog.log("hadValue" + Boolean.toString(IguanaTweaks.entityDataMap.containsKey(entity.entityUniqueID)) + " time" + Boolean.toString(entity.entityAge % 10 == 0));
-				 */
 
-				EntityData entityData = new EntityData(speedModifier, weight, maxWeight, slownessWeight, slownessArmour);
-				IguanaTweaks.entityDataMap.put(entity.getUniqueID(), entityData);
+				if (entity instanceof EntityPlayer && IguanaConfig.maxCarryWeight > 0) 
+				{
+					EntityPlayer player = (EntityPlayer)entity;
+
+					for (Object slotObject : player.inventoryContainer.inventorySlots) 
+					{
+						Slot slot = (Slot)slotObject;
+						if (slot.getHasStack())
+						{
+							double toAdd = 0d;	
+
+							ItemStack stack = slot.getStack();
+							Block block = null;
+							try {
+								block = Block.getBlockFromItem(stack.getItem());
+							} catch (Exception e) {
+							}
+
+							if (block != null) {
+								toAdd = IguanaTweaks.getBlockWeight(block) * (double)IguanaConfig.rockWeight;
+							} else { //is item
+								toAdd = 1d / 64d;
+							}
+							weight += toAdd * (double)stack.stackSize;
+						}
+					}
+
+					// Calculate max weight
+					maxWeight = (double)IguanaConfig.maxCarryWeight;
+
+					slownessWeight = (weight / maxWeight) *  100d;
+
+					if (slownessWeight > 0) player.addExhaustion(0.0001F * Math.round(slownessWeight));
+				}
+
+				if (slownessArmour > 100d) slownessArmour = 100d;
+				if (slownessHurt > 100) slownessHurt = 100;
+				if (slownessTerrain > 100) slownessTerrain = 100;
+				if (slownessWeight > 100d) slownessWeight = 100d;
+				double speedModifierArmour = (100d - slownessArmour) / 100d;
+				double speedModifierHurt = (100d - (double)slownessHurt) / 100d;
+				double speedModifierTerrain = (100d - (double)slownessTerrain) / 100d;
+				double speedModifierWeight = (100d - slownessWeight) / 100d;
+
+				//if (entity instanceof EntityPlayer) FMLLog.warning("speedModifier" + Double.toString(speedModifier));
+				//if (world.isRemote && entity instanceof EntityPlayer) FMLLog.warning("ssp" + Double.toString(speedModifier));
+				//if (!world.isRemote && entity instanceof EntityPlayer) FMLLog.warning("smp" + Double.toString(speedModifier));
+
+				speedModifier = speedModifierArmour * speedModifierHurt * speedModifierTerrain * speedModifierWeight;
+
+				if (entity instanceof EntityPlayerSP) 
+				{
+					EntityPlayerSP playerSP = (EntityPlayerSP)entity;
+					if (playerSP.moveForward < 0f) speedModifier *= 0.5d;
+				}
+				if (onIce) speedModifier = 0.8d + (speedModifier / 5d);
+
+				//if (entity instanceof EntityPlayer) FMLLog.warning("onIce" + Boolean.toString(onIce) + " mod" + Double.toString(speedModifier));
+
 			}
 
-			if (speedModifier != 1d && !jumping)
-			{
-				//if (jumping) speedModifier = 0.75d + (speedModifier / 4d);
-				speedModifier = (2d * speedModifier) - 1d;
-				entity.motionX *= speedModifier;
-				entity.motionZ *= speedModifier;
+			/*
+				if (entity instanceof EntityPlayer)
+					IguanaLog.log("hadValue" + Boolean.toString(IguanaTweaks.entityDataMap.containsKey(entity.entityUniqueID)) + " time" + Boolean.toString(entity.entityAge % 10 == 0));
+			 */
+
+			if(entity.getExtendedProperties("IguanaEntityProperties") != null) {
+				IguanaEntityProperties props = (IguanaEntityProperties)entity.getExtendedProperties("IguanaEntityProperties");
+				props.setAll(speedModifier, weight, maxWeight, slownessWeight, slownessArmour);
 			}
 		}
 	}
@@ -400,14 +357,14 @@ public class IguanaEventHook {
 				event.left.add("Creative Mode");
 			}
 
-			if (IguanaTweaks.entityDataMap.containsKey(player.getUniqueID()))
+			if (player.getExtendedProperties("IguanaEntityProperties") != null)
 			{
-				EntityData playerWeightValues = IguanaTweaks.entityDataMap.get(player.getUniqueID());
+				IguanaEntityProperties props = (IguanaEntityProperties)player.getExtendedProperties("IguanaEntityProperties");
 
 				if (mc.gameSettings.showDebugInfo && IguanaConfig.addEncumbranceDebugText) {
 					event.left.add("");
-					event.left.add("Weight: " + String.format("%.2f", playerWeightValues.currentWeight) + " / " + String.format("%.2f", playerWeightValues.maxWeight) 
-							+ " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)");
+					event.left.add("Weight: " + String.format("%.2f", props.currentWeight) + " / " + String.format("%.2f", props.maxWeight) 
+							+ " (" + String.format("%.2f", props.encumberance) + "%)");
 				} 
 				else if (!player.isDead && !player.capabilities.isCreativeMode && IguanaConfig.addEncumbranceHudText)
 				{
@@ -417,16 +374,16 @@ public class IguanaEventHook {
 
 					if (IguanaConfig.detailedEncumbranceHudText)
 					{
-						if (playerWeightValues.encumberance >= 30) color = "\u00A74";
-						else if (playerWeightValues.encumberance >= 20) color = "\u00A76";
-						else if (playerWeightValues.encumberance >= 10) color = "\u00A7e";
+						if (props.encumberance >= 30) color = "\u00A74";
+						else if (props.encumberance >= 20) color = "\u00A76";
+						else if (props.encumberance >= 10) color = "\u00A7e";
 
-						line = "Weight: " + Double.toString(Math.round(playerWeightValues.currentWeight)) + " / " + Double.toString(Math.round(playerWeightValues.maxWeight)) 
-								+ " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)";
+						line = "Weight: " + Double.toString(Math.round(props.currentWeight)) + " / " + Double.toString(Math.round(props.maxWeight)) 
+								+ " (" + String.format("%.2f", props.encumberance) + "%)";
 					}
 					else
 					{
-						double totalEncumberance = playerWeightValues.encumberance + playerWeightValues.armour;
+						double totalEncumberance = props.encumberance + props.armour;
 
 						if (totalEncumberance >= 30) color = "\u00A74";
 						else if (totalEncumberance >= 20) color = "\u00A76";
@@ -692,6 +649,8 @@ public class IguanaEventHook {
 
 	@SubscribeEvent
 	public void onEntityConstructed(EntityConstructing event) {
-
+		if(event.entity instanceof EntityLivingBase) {
+			event.entity.registerExtendedProperties("IguanaEntityProperties", new IguanaEntityProperties());
+		}
 	}
 }
