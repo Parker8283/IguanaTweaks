@@ -1,20 +1,21 @@
 package iguanaman.iguanatweaks.events;
 
-import iguanaman.iguanatweaks.IguanaConfig;
-import iguanaman.iguanatweaks.data.IguanaEntityProperties;
+import iguanaman.iguanatweaks.IguanaTweaks;
+import iguanaman.iguanatweaks.config.IguanaConfig;
+import iguanaman.iguanatweaks.data.EntityData;
+
+import java.util.Map;
+import java.util.UUID;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.world.WorldServer;
 
 import org.lwjgl.input.Keyboard;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 
 public class IguanaTickHandler {
 
@@ -38,25 +39,17 @@ public class IguanaTickHandler {
 	}
 
 	@SubscribeEvent
-	public void onRenderTick(WorldTickEvent event) {
+	public void onClientTick(ClientTickEvent event) {
 		if(event.phase == Phase.START) {
 			keyTick(false);
 
-			for(WorldServer server : MinecraftServer.getServer().worldServers) {
-				for(int i = 0; i < server.loadedEntityList.size(); i++) {
-					Entity entity = (Entity)server.loadedEntityList.get(i);
-					if(entity instanceof EntityLivingBase) {
-						EntityLivingBase elb = (EntityLivingBase)entity;
-						if(elb.getExtendedProperties("IguanaEntityProperties") != null) {
-							IguanaEntityProperties props = (IguanaEntityProperties)elb.getExtendedProperties("IguanaEntityProperties");
-							if(++props.age >= IguanaConfig.tickRateEntityUpdate) {
-								props.zeroAll();
-							}
-						}
-					}
-				}
+			for(Map.Entry<UUID, EntityData> entry : IguanaTweaks.entityDataMap.entrySet())
+			{
+				EntityData data = entry.getValue();
+				if (++data.age >= IguanaConfig.tickRateEntityUpdate)
+					IguanaTweaks.entityDataMap.remove(entry.getKey());
 			}
-		} else {
+		}else{
 			keyTick(true);
 		}
 	}

@@ -1,7 +1,8 @@
 package iguanaman.iguanatweaks.util;
 
-import iguanaman.iguanatweaks.IguanaConfig;
 import iguanaman.iguanatweaks.IguanaTweaks;
+import iguanaman.iguanatweaks.config.IguanaConfig;
+import iguanaman.iguanatweaks.config.IguanaWeightsConfig;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,7 @@ public class StackSizeTweaks {
 
 					if (item != null)
 					{
-						float blockWeight = (float)IguanaTweaks.getBlockWeight(block);
+						float blockWeight = (float)IguanaWeightsConfig.getBlockWeight(block);
 
 						int size = 0;
 

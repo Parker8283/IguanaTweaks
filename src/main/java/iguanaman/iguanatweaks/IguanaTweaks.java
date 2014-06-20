@@ -1,6 +1,10 @@
 package iguanaman.iguanatweaks;
 
+import iguanaman.iguanatweaks.config.IguanaConfig;
+import iguanaman.iguanatweaks.config.IguanaConfigHandler;
+import iguanaman.iguanatweaks.data.EntityData;
 import iguanaman.iguanatweaks.data.IguanaPotion;
+import iguanaman.iguanatweaks.data.ModInfo;
 import iguanaman.iguanatweaks.events.IguanaEventHook;
 import iguanaman.iguanatweaks.events.IguanaKeyHandler;
 import iguanaman.iguanatweaks.events.IguanaPlayerHandler;
@@ -8,8 +12,12 @@ import iguanaman.iguanatweaks.events.IguanaTickHandler;
 import iguanaman.iguanatweaks.proxy.CommonProxy;
 import iguanaman.iguanatweaks.util.RecipeRemover;
 import iguanaman.iguanatweaks.util.StackSizeTweaks;
+
+import java.io.File;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -29,7 +37,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-@Mod(modid="IguanaTweaks", name="Iguana Tweaks", version="@MOD_VERSION@", dependencies = "required-after:Forge@[10.12.2.1121,);")
+@Mod(modid=ModInfo.MODID, name=ModInfo.MOD_NAME, version=ModInfo.VERSION, dependencies=ModInfo.DEPENDENCIES)
 public class IguanaTweaks {
 
 	// The instance of your mod that Forge uses.
@@ -44,12 +52,16 @@ public class IguanaTweaks {
 
 	public static Potion poisonNew;
 	public static Potion slowdownNew;
+	
+	public static ConcurrentHashMap<UUID, EntityData> entityDataMap = new ConcurrentHashMap<UUID, EntityData>();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		log = event.getModLog();
 
-		IguanaConfig.Init(event.getSuggestedConfigurationFile());
+		File configFolder = new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + ModInfo.MODID + File.separator);
+		
+		new IguanaConfigHandler(configFolder);
 
 		slowdownNew = new IguanaPotion(IguanaConfig.damageSlowdownPotionId, true, 5926017);
 
@@ -97,20 +109,5 @@ public class IguanaTweaks {
 		FMLCommonHandler.instance().bus().register(new IguanaPlayerHandler());
 		FMLCommonHandler.instance().bus().register(new IguanaTickHandler());
 		FMLCommonHandler.instance().bus().register(new IguanaKeyHandler());
-	}
-
-	public static double getBlockWeight(Block block)
-	{
-		Material blockMaterial = block.getMaterial();
-
-		if (blockMaterial == Material.iron || blockMaterial == Material.anvil) return 1.5d;
-		else if (blockMaterial == Material.rock) return 1d;
-		else if (blockMaterial == Material.grass || blockMaterial == Material.ground 
-				|| blockMaterial == Material.sand || blockMaterial == Material.snow 
-				|| blockMaterial == Material.wood || blockMaterial == Material.glass 
-				|| blockMaterial == Material.ice || blockMaterial == Material.tnt) return 0.5d;
-		else if (blockMaterial == Material.cloth) return 0.25d;
-		else if (block.isOpaqueCube()) return 1d / 16d;
-		else return 1d / 64d; // item like block
 	}
 }

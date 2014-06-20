@@ -1,4 +1,4 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.config;
 
 import java.io.File;
 import java.util.ArrayList;
