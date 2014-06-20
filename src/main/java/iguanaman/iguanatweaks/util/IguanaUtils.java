@@ -1,4 +1,6 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.util;
+
+import iguanaman.iguanatweaks.IguanaTweaks;
 
 import java.lang.reflect.Field;
 

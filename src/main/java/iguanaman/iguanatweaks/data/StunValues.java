@@ -1,4 +1,4 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.data;
 
 public class StunValues {
 

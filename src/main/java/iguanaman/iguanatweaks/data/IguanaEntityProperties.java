@@ -1,5 +1,6 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.data;
 
+import iguanaman.iguanatweaks.util.IguanaUtils;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

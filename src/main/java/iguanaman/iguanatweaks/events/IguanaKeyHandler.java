@@ -1,4 +1,4 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.events;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;

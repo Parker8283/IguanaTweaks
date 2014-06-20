@@ -1,5 +1,13 @@
 package iguanaman.iguanatweaks;
 
+import iguanaman.iguanatweaks.data.IguanaPotion;
+import iguanaman.iguanatweaks.events.IguanaEventHook;
+import iguanaman.iguanatweaks.events.IguanaKeyHandler;
+import iguanaman.iguanatweaks.events.IguanaPlayerHandler;
+import iguanaman.iguanatweaks.events.IguanaTickHandler;
+import iguanaman.iguanatweaks.proxy.CommonProxy;
+import iguanaman.iguanatweaks.util.RecipeRemover;
+import iguanaman.iguanatweaks.util.StackSizeTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
@@ -29,7 +37,7 @@ public class IguanaTweaks {
 	public static IguanaTweaks instance;
 
 	// Says where the client and server 'proxy' code is loaded.
-	@SidedProxy(clientSide="iguanaman.iguanatweaks.ClientProxy", serverSide="iguanaman.iguanatweaks.CommonProxy")
+	@SidedProxy(clientSide="iguanaman.iguanatweaks.proxy.ClientProxy", serverSide="iguanaman.iguanatweaks.proxy.CommonProxy")
 	public static CommonProxy proxy;
 
 	public static Logger log;

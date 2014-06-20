@@ -1,4 +1,4 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.util;
 
 import java.util.List;
 

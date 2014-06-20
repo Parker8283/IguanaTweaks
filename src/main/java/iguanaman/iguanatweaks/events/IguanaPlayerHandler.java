@@ -1,5 +1,7 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.events;
 
+import iguanaman.iguanatweaks.IguanaConfig;
+import iguanaman.iguanatweaks.IguanaTweaks;
 import net.minecraft.block.BlockBed;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;

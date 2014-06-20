@@ -1,5 +1,7 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.util;
 
+import iguanaman.iguanatweaks.IguanaConfig;
+import iguanaman.iguanatweaks.IguanaTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

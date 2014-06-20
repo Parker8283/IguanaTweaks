@@ -1,4 +1,8 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.events;
+
+import iguanaman.iguanatweaks.IguanaConfig;
+import iguanaman.iguanatweaks.IguanaTweaks;
+import iguanaman.iguanatweaks.data.IguanaEntityProperties;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;

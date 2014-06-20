@@ -1,5 +1,7 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.events;
 
+import iguanaman.iguanatweaks.IguanaConfig;
+import iguanaman.iguanatweaks.data.IguanaEntityProperties;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.entity.Entity;

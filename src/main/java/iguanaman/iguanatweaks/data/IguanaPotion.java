@@ -1,5 +1,6 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.data;
 
+import iguanaman.iguanatweaks.IguanaTweaks;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.util.DamageSource;

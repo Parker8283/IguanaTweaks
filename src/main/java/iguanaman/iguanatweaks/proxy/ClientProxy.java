@@ -1,4 +1,4 @@
-package iguanaman.iguanatweaks;
+package iguanaman.iguanatweaks.proxy;
 
 import net.minecraftforge.client.GuiIngameForge;
 
