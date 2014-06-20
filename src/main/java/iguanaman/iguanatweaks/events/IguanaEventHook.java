@@ -39,6 +39,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.BreakSpeed;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.event.terraingen.OreGenEvent.GenerateMinable;
@@ -662,4 +663,12 @@ public class IguanaEventHook {
     	}
 
     }*/
+	
+	@SideOnly(Side.CLIENT)
+	@SubscribeEvent
+	public void onItemTooltip(ItemTooltipEvent event) {
+		if(event.showAdvancedItemTooltips) {
+			event.toolTip.add("Weight: " + IguanaWeightsConfig.getBlockWeight(Block.getBlockFromItem(event.itemStack.getItem())));
+		}
+	}
 }
