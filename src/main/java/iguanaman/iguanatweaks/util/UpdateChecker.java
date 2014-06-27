@@ -30,7 +30,7 @@ public class UpdateChecker {
 
         private int code;
 
-        private Result (int code) {
+        private Result(int code) {
             this.code = code;
         }
 
@@ -79,8 +79,6 @@ public class UpdateChecker {
                             } else {
                                 reader.skipValue();
                             }
-                        } else {
-                            continue;
                         }
                     } else {
                         reader.skipValue();

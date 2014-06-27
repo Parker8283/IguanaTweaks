@@ -2,8 +2,10 @@ package iguanaman.iguanatweaks.proxy;
 
 public class CommonProxy {
 
-	// Client stuff
-	public void registerRenderers() {}
+    // Client stuff
+    public void registerRenderers() {
+    }
 
-	public void disableExperienceHud() {}
+    public void disableExperienceHud() {
+    }
 }
