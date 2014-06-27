@@ -1,5 +1,28 @@
 package iguanaman.iguanatweaks;
 
+import java.io.File;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
+import org.apache.logging.log4j.Logger;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.potion.Potion;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweaks.config.IguanaConfig;
 import iguanaman.iguanatweaks.config.IguanaConfigHandler;
 import iguanaman.iguanatweaks.data.EntityData;
@@ -12,30 +35,7 @@ import iguanaman.iguanatweaks.events.IguanaTickHandler;
 import iguanaman.iguanatweaks.proxy.CommonProxy;
 import iguanaman.iguanatweaks.util.RecipeRemover;
 import iguanaman.iguanatweaks.util.StackSizeTweaks;
-
-import java.io.File;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-
-import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.potion.Potion;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import org.apache.logging.log4j.Logger;
-
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import iguanaman.iguanatweaks.util.UpdateChecker;
 
 @Mod(modid=ModInfo.MODID, name=ModInfo.MOD_NAME, version=ModInfo.VERSION, dependencies=ModInfo.DEPENDENCIES)
 public class IguanaTweaks {
@@ -50,6 +50,8 @@ public class IguanaTweaks {
 
 	public static Logger log;
 
+    public UpdateChecker.Result result;
+
 	public static Potion poisonNew;
 	public static Potion slowdownNew;
 	
@@ -62,6 +64,8 @@ public class IguanaTweaks {
 		File configFolder = new File(event.getModConfigurationDirectory().getAbsolutePath() + File.separator + ModInfo.MODID + File.separator);
 		
 		new IguanaConfigHandler(configFolder);
+
+        result = UpdateChecker.runUpdateCheck();
 
 		slowdownNew = new IguanaPotion(IguanaConfig.damageSlowdownPotionId, true, 5926017);
 
@@ -109,5 +113,6 @@ public class IguanaTweaks {
 		FMLCommonHandler.instance().bus().register(new IguanaPlayerHandler());
 		FMLCommonHandler.instance().bus().register(new IguanaTickHandler());
 		FMLCommonHandler.instance().bus().register(new IguanaKeyHandler());
+        FMLCommonHandler.instance().bus().register(UpdateChecker.instance.new UpdaterEventHook());
 	}
 }

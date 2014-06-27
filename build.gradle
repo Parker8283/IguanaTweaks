@@ -25,8 +25,9 @@ minecraft {
     version = "1.7.2-10.12.2.1121"
     assetDir = "../run/assets"
     
-    replaceIn "IguanaTweaks.java"
+    replaceIn "data/ModInfo.java"
     replace "@MOD_VERSION@", project.version
+    replace "@IS_RELEASE@", "false"
 }
 
 processResources
