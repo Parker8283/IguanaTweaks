@@ -65,7 +65,7 @@ public class IguanaTweaks {
 
         new IguanaConfigHandler(configFolder);
 
-        result = UpdateChecker.runUpdateCheck();
+        //result = UpdateChecker.runUpdateCheck();
 
         slowdownNew = new IguanaPotion(IguanaConfig.damageSlowdownPotionId, true, 5926017);
 
@@ -112,6 +112,6 @@ public class IguanaTweaks {
         FMLCommonHandler.instance().bus().register(new IguanaPlayerHandler());
         FMLCommonHandler.instance().bus().register(new IguanaTickHandler());
         FMLCommonHandler.instance().bus().register(new IguanaKeyHandler());
-        FMLCommonHandler.instance().bus().register(UpdateChecker.instance.new UpdaterEventHook());
+        //FMLCommonHandler.instance().bus().register(UpdateChecker.instance.new UpdaterEventHook());
     }
 }

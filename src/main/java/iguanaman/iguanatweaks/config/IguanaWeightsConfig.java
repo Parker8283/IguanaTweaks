@@ -2,6 +2,7 @@ package iguanaman.iguanatweaks.config;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -19,7 +20,12 @@ public class IguanaWeightsConfig {
             weights = IguanaJsonReader.readWeightsJson(file);
         } else {
             try {
-                file.createNewFile();
+                if(file.createNewFile()) {
+                    PrintWriter writer = new PrintWriter(file);
+                    writer.println("[");
+                    writer.println("]");
+                    writer.close();
+                }
             } catch(IOException e) {
                 IguanaTweaks.log.error("There was an error in creating the weights.json file");
                 e.printStackTrace();
