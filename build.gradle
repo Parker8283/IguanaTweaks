@@ -17,13 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.2-Beta-" + System.getenv("BUILD_NUMBER")
-group= "iguanaman" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "1.7.10-Beta-" + System.getenv("BUILD_NUMBER")
+group = "iguanaman" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "IguanaTweaks"
 
 minecraft {
-    version = "1.7.2-10.12.2.1121"
-    assetDir = "../run/assets"
+    version = "1.7.10-10.13.0.1180"
+    runDir = "run"
     
     replaceIn "ModInfo.java"
     replace "@MOD_VERSION@", project.version
@@ -47,5 +47,11 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+jar {
+    manifest {
+        attributes "FMLAT": "IguanaTweaks_at.cfg"
     }
 }

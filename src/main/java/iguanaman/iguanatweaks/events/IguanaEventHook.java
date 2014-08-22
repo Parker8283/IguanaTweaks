@@ -1,6 +1,5 @@
 package iguanaman.iguanatweaks.events;
 
-import java.lang.reflect.Method;
 import java.util.Iterator;
 
 import org.lwjgl.opengl.GL11;
@@ -444,7 +443,7 @@ public class IguanaEventHook {
     @SubscribeEvent
     public void onBreakSpeed(BreakSpeed event) {
         if(IguanaConfig.hardnessMultiplier != 1d && event.entityPlayer != null && event.block != null) {
-            if((IguanaConfig.hardnessBlockListIsWhitelist && IguanaConfig.hardnessBlockList.contains(event.block)) || (!IguanaConfig.hardnessBlockListIsWhitelist && !IguanaConfig.hardnessBlockList.contains(event.block))) {
+            if((IguanaConfig.hardnessBlockListIsWhitelist && IguanaConfig.hardnessBlockList.contains(Block.blockRegistry.getNameForObject(event.block))) || (!IguanaConfig.hardnessBlockListIsWhitelist && !IguanaConfig.hardnessBlockList.contains(Block.blockRegistry.getNameForObject(event.block)))) {
                 if(IguanaConfig.hardnessMultiplier == 0d)
                     event.newSpeed = Float.MAX_VALUE;
                 else
@@ -504,25 +503,10 @@ public class IguanaEventHook {
             GL11.glEnable(GL12.GL_RESCALE_NORMAL);
             RenderHelper.enableGUIStandardItemLighting();
 
-            Class guiingame;
-            try {
-                guiingame = Class.forName("net.minecraft.client.gui.GuiIngame");
-
-                Method renderInvSlot;
-                if(guiingame != null) {
-                    renderInvSlot = guiingame.getDeclaredMethod("renderInventorySlot", int.class, int.class, int.class, float.class);
-                    renderInvSlot.setAccessible(true);
-                    if(renderInvSlot != null) {
-                        for(int i = 0; i < 9; ++i) {
-                            int x = width / 2 - 90 + i * 20 + 2;
-                            int z = height - 16 - 3;
-                            renderInvSlot.invoke(guiingame.newInstance(), i, x, z, event.partialTicks);
-                        }
-                    }
-                }
-            } catch(Exception ex) {
-                IguanaTweaks.log.fatal("Failed to access renderInventorySlot.");
-                ex.printStackTrace();
+            for(int i = 0; i < 9; ++i) {
+                int x = width / 2 - 90 + i * 20 + 2;
+                int z = height - 16 - 3;
+                g.renderInventorySlot(i, x, z, event.partialTicks);
             }
 
             RenderHelper.disableStandardItemLighting();
