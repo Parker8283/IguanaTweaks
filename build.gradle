@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-Beta-" + System.getenv("BUILD_NUMBER")
+version = "1.7.10-Beta-17"
 group = "iguanaman" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "IguanaTweaks"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "1.7.10-10.13.0.1185"
     runDir = "run"
     
     replaceIn "ModInfo.java"
