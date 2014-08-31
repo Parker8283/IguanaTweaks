@@ -27,7 +27,7 @@ public class StackSizeTweaks {
                     }
 
                     if(item != null) {
-                        float blockWeight = (float)IguanaWeightsConfig.getBlockWeight(block);
+                        float blockWeight = (float)IguanaWeightsConfig.getBlockWeight(block, false);
 
                         int size = 0;
 
