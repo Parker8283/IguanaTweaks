@@ -9,7 +9,13 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 
+import cpw.mods.fml.client.event.ConfigChangedEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 public class IguanaConfig {
+
+    public static Configuration config;
+    public static final String[] CATEGORIES = new String[] {"hardness", "stacksizes", "respawn", "hud", "movementrestriction", "itemlifespans", "vanillaoregen", "experience", "other", "droprestrictions"};
 
     // hardness
     public static double hardnessMultiplier;
@@ -98,10 +104,21 @@ public class IguanaConfig {
     public static int miningExhaustionPercentage;
     public static int tickRateEntityUpdate;
 
-    public static void Init(File file) {
-        Configuration config = new Configuration(file);
-        config.load();
+    public static void init(File file) {
+        if(config == null) {
+            config = new Configuration(file);
+            reload();
+        }
+    }
 
+    @SubscribeEvent
+    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+        if(event.modID.equals("IguanaTweaks")) {
+            reload();
+        }
+    }
+
+    private static void reload() {
         // hardness
         ConfigCategory hardnessCategory = config.getCategory("hardness");
         hardnessCategory.setComment("Change the hardness of blocks, using either a blacklist or whitelist");
