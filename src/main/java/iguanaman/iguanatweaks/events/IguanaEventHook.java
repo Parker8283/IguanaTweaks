@@ -197,7 +197,7 @@ public class IguanaEventHook {
                                 Block block = Block.getBlockFromItem(stack.getItem());
 
                                 if(block != null) {
-                                    toAdd = IguanaWeightsConfig.getBlockWeight(block) * (double)IguanaConfig.rockWeight;
+                                    toAdd = IguanaWeightsConfig.getBlockWeight(block, false) * (double)IguanaConfig.rockWeight;
                                 } else { //is item
                                     toAdd = 1d / 64d;
                                 }
@@ -587,7 +587,7 @@ public class IguanaEventHook {
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if(event.showAdvancedItemTooltips) {
-            event.toolTip.add("Weight: " + IguanaWeightsConfig.getBlockWeight(Block.getBlockFromItem(event.itemStack.getItem())));
+            event.toolTip.add("Weight: " + IguanaWeightsConfig.getBlockWeight(Block.getBlockFromItem(event.itemStack.getItem()), false));
         }
     }
 }
