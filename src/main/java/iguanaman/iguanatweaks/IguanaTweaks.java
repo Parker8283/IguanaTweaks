@@ -65,6 +65,8 @@ public class IguanaTweaks {
 
         new IguanaConfigHandler(configFolder);
 
+        FMLCommonHandler.instance().bus().register(new IguanaConfig());
+
         //result = UpdateChecker.runUpdateCheck();
 
         slowdownNew = new IguanaPotion(IguanaConfig.damageSlowdownPotionId, true, 5926017);
