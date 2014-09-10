@@ -132,7 +132,7 @@ public class IguanaConfig {
         hardnessBlockListIsWhitelistProperty.comment = "Whether hardness multiplier only affects blocks on the list (true) or if all blocks are affect except those on the list (false)";
         hardnessBlockListIsWhitelist = hardnessBlockListIsWhitelistProperty.getBoolean(false);
 
-        Property hardnessBlockListProperty = config.get("hardness", "hardnessBlockList", new int[]{});
+        Property hardnessBlockListProperty = config.get("hardness", "hardnessBlockList", new String[]{});
         hardnessBlockListProperty.comment = "Block names (each on seperate line) for the hardness whitelist/blacklist";
         Collections.addAll(hardnessBlockList, hardnessBlockListProperty.getStringList());
 
