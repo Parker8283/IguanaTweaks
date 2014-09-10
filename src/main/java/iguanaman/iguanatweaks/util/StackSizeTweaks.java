@@ -17,21 +17,15 @@ public class StackSizeTweaks {
             for(Object obj : Block.blockRegistry) {
                 if(obj instanceof Block) {
                     Block block = (Block)obj;
-                    Item item = null;
-                    ItemStack stack = null;
-                    try {
-                        item = Item.getItemFromBlock(block);
-                        stack = new ItemStack(item);
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+                    Item item = Item.getItemFromBlock(block);
+                    ItemStack stack = new ItemStack(item);
 
                     if(item != null) {
-                        float blockWeight = (float)IguanaWeightsConfig.getBlockWeight(block, false);
+                        float blockWeight = (float)IguanaWeightsConfig.getBlockWeight(block);
 
                         int size = 0;
 
-                        if(blockWeight > 0d) {
+                        if(blockWeight > 0) {
                             size = Math.round((float)item.getItemStackLimit(stack) / ((float)IguanaConfig.blockStackSizeDividerMax * blockWeight));
                             if(size > item.getItemStackLimit(stack) / IguanaConfig.blockStackSizeDividerMin)
                                 size = item.getItemStackLimit(stack) / IguanaConfig.blockStackSizeDividerMin;
@@ -59,7 +53,7 @@ public class StackSizeTweaks {
             for(Object obj : Item.itemRegistry) {
                 if(obj instanceof Item) {
                     Item item = (Item)obj;
-                    if(item != null) {
+                    if(!item.getUnlocalizedName().startsWith("tile.")) {
                         ItemStack stack = new ItemStack(item);
                         int size = item.getItemStackLimit(stack) / IguanaConfig.itemStackSizeDivider;
                         if(size < 1)
@@ -76,5 +70,4 @@ public class StackSizeTweaks {
             }
         }
     }
-
 }

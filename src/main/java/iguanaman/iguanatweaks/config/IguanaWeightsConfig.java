@@ -40,18 +40,7 @@ public class IguanaWeightsConfig {
      * @param block The block to get the weight for
      * @return The weight of the block as a double
      */
-    public static double getBlockWeight(Block block, boolean ignoreInv) {
-        if(!ignoreInv) {
-            if(block instanceof IInventory) {
-                IInventory inventory = (IInventory)block;
-                double temp = 0D;
-                for(int i = 0; i < inventory.getSizeInventory(); i++) {
-                    temp += getBlockWeight(Block.getBlockFromItem(inventory.getStackInSlot(i).getItem()), false);
-                }
-                temp += getBlockWeight(block, true);
-                return temp;
-            }
-        }
+    public static double getBlockWeight(Block block) {
         if(weights != null && weights.containsKey(Block.blockRegistry.getNameForObject(block))) {
             return weights.get(Block.blockRegistry.getNameForObject(block));
         } else {
