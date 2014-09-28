@@ -53,8 +53,6 @@ import iguanaman.iguanatweaks.config.IguanaConfig;
 import iguanaman.iguanatweaks.config.IguanaWeightsConfig;
 import iguanaman.iguanatweaks.data.EntityData;
 import iguanaman.iguanatweaks.util.IguanaUtils;
-import scala.Int;
-import scala.collection.generic.BitOperations;
 
 public class IguanaEventHook {
 
