@@ -69,6 +69,7 @@ public class IguanaConfig {
     public static int terrainSlowdownOnIce;
     public static int terrainSlowdownOnPlant;
     public static int terrainSlowdownOnSand;
+    public static int terrainSlowdownOnGravel;
     public static int terrainSlowdownOnSnow;
     public static int terrainSlowdownInSnow;
     public static int terrainSlowdownInPlant;
@@ -305,6 +306,11 @@ public class IguanaConfig {
         terrainSlowdownOnDirtProperty.comment = "Percentage of slowdown when walking on dirt or grass (Set 0 to disable)";
         terrainSlowdownOnDirt = Math.max(terrainSlowdownOnDirtProperty.getInt(5), 0);
         terrainSlowdownOnDirtProperty.set(terrainSlowdownOnDirt);
+
+        Property terrainSlowdownOnGravelProperty = config.get("movementrestriction", "terrainSlowdownOnGravel", 0);
+        terrainSlowdownOnGravelProperty.comment = "Percentage of slowdown when walking on gravel (Set 0 to disable)";
+        terrainSlowdownOnGravel = Math.max(terrainSlowdownOnGravelProperty.getInt(0), 0);
+        terrainSlowdownOnGravelProperty.set(terrainSlowdownOnGravel);
 
         Property terrainSlowdownOnIceProperty = config.get("movementrestriction", "terrainSlowdownOnIce", 20);
         terrainSlowdownOnIceProperty.comment = "Percentage of slowdown when walking on ice (Set 0 to disable)";

@@ -2,6 +2,8 @@ package iguanaman.iguanatweaks.events;
 
 import java.util.Iterator;
 
+import net.minecraft.block.BlockGravel;
+import net.minecraft.init.Blocks;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -51,6 +53,8 @@ import iguanaman.iguanatweaks.config.IguanaConfig;
 import iguanaman.iguanatweaks.config.IguanaWeightsConfig;
 import iguanaman.iguanatweaks.data.EntityData;
 import iguanaman.iguanatweaks.util.IguanaUtils;
+import scala.Int;
+import scala.collection.generic.BitOperations;
 
 public class IguanaEventHook {
 
@@ -161,11 +165,13 @@ public class IguanaEventHook {
 
                         Material blockOnMaterial = world.getBlock(posX, posY, posZ).getMaterial();
                         Material blockInMaterial = world.getBlock(posX, posY + 1, posZ).getMaterial();
-
+                        Block blockOnBlock = world.getBlock(posX, posY, posZ);
                         if(blockOnMaterial == Material.grass || blockOnMaterial == Material.ground)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnDirt;
-                        else if(blockOnMaterial == Material.sand)
+                        else if(blockOnMaterial == Material.sand && blockOnBlock != Blocks.gravel)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnSand;
+                        else if(blockOnBlock == Blocks.gravel) //gravel
+                            slownessTerrain = IguanaConfig.terrainSlowdownOnGravel;
                         else if(blockOnMaterial == Material.leaves || blockOnMaterial == Material.plants || blockOnMaterial == Material.vine)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnPlant;
                         else if(blockOnMaterial == Material.ice)
