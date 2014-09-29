@@ -143,7 +143,7 @@ public class IguanaEventHook {
                         double posmod = 0d;
 
                         if(entity instanceof EntityClientPlayerMP)
-                            posmod = 1.62d;
+                            posmod = 1.039d;
 
                         int posX = (int)entity.posX;
                         int posY = (int)(entity.posY - posmod - 1d);
