@@ -174,9 +174,10 @@ public class IguanaEventHook {
                                     --posX1;
                             }
                             if (Math.abs(entity.posX - (int) entity.posX) > 0.7) {
-                                posX1 = (int) (entity.posX + (1.3 * (1 - (entity.posX - (int) entity.posX))));
-                                if(posX1 < 0)
-                                    --posX1;
+                                if(entity.posX < 0)
+                                    posX1 = (int) (entity.posX - (1.3 * (2 + (entity.posX - (int) entity.posX))));
+                                else if(entity.posX > 0)
+                                    posX1 = (int) (entity.posX + (1.3 * (1 - (entity.posX - (int) entity.posX))));
                             }
                             if (Math.abs(entity.posZ - (int) entity.posZ) < 0.3) {
                                 posZ1 = (int) (entity.posZ - (1.3 * (entity.posZ - (int) entity.posZ)));
@@ -184,9 +185,10 @@ public class IguanaEventHook {
                                     --posZ1;
                             }
                             if (Math.abs(entity.posZ - (int) entity.posZ) > 0.7) {
-                                posZ1 = (int) (entity.posZ + (1.3 * (1 - (entity.posZ - (int) entity.posZ))));
-                                if(posZ1 < 0)
-                                    --posZ1;
+                                if(entity.posZ < 0)
+                                    posZ1 = (int) (entity.posZ - (1.3 * (2 + (entity.posZ - (int) entity.posZ))));
+                                else if(entity.posZ > 0)
+                                    posZ1 = (int) (entity.posZ + (1.3 * (1 - (entity.posZ - (int) entity.posZ))));
                             }
                             if(posX1 == 0)
                                 posX1 = posX;
@@ -200,7 +202,7 @@ public class IguanaEventHook {
                             slownessTerrain = IguanaConfig.terrainSlowdownOnDirt;
                         else if(blockOnMaterial == Material.sand && blockOnBlock != Blocks.gravel)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnSand;
-                        else if(blockOnBlock == Blocks.gravel) //gravel
+                        else if(blockOnBlock == Blocks.gravel)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnGravel;
                         else if(blockOnMaterial == Material.leaves || blockOnMaterial == Material.plants || blockOnMaterial == Material.vine)
                             slownessTerrain = IguanaConfig.terrainSlowdownOnPlant;
