@@ -7,9 +7,10 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
+import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweaks.IguanaTweaks;
 import iguanaman.iguanatweaks.util.IguanaJsonReader;
 
@@ -36,19 +37,25 @@ public class IguanaWeightsConfig {
     }
 
     /**
-     * Obtains the weight of a given block, either specified in the <I>weights.json</I> file, or by using it's material if the block is not specified in the <I>weights.json</I> file.
-     * @param block The block to get the weight for
+     * Obtains the weight of a given block or item, either specified in the <I>weights.json</I> file, or by using it's default value if a different one is not specified in the <I>weights.json</I> file.<br/>
+     * Blocks' default value are based on their material, while all Items are one constant value.
+     * @param stack The ItemStack to get the weight for
      * @return The weight of the block as a double
      */
-    public static double getBlockWeight(Block block) {
-        if(weights != null && weights.containsKey(Block.blockRegistry.getNameForObject(block))) {
-            return weights.get(Block.blockRegistry.getNameForObject(block));
+    public static double getWeight(ItemStack stack) {
+        if(weights != null && weights.containsKey(GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString())) {
+            return weights.get(GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString());
         } else {
-            return getBlockWeightFromMaterial(block);
+            return getDefaultWeight(stack);
         }
     }
 
-    private static double getBlockWeightFromMaterial(Block block) {
+    private static double getDefaultWeight(ItemStack stack) {
+        if(!(stack.getItem() instanceof ItemBlock)) {
+            return 1D / 64D;
+        }
+
+        Block block = Block.getBlockFromItem(stack.getItem());
         Material blockMaterial = block.getMaterial();
 
         if(blockMaterial == Material.iron || blockMaterial == Material.anvil) {
@@ -59,10 +66,8 @@ public class IguanaWeightsConfig {
             return 0.5D;
         } else if(blockMaterial == Material.cloth) {
             return 0.25D;
-        } else if(block.isOpaqueCube()) {
-            return 1D / 16D;
         } else {
-            return 1D / 64D; // item like block
+            return 1D / 16D;
         }
     }
 }

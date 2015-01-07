@@ -14,7 +14,7 @@ public class IguanaJsonReader {
 
     public static HashMap<String, Double> readWeightsJson(File file) {
         HashMap<String, Double> weights = new HashMap<String, Double>();
-        String blockName = null;
+        String objName = null;
         double weight = 0.0D;
         FileInputStream fis;
         JsonReader reader = null;
@@ -27,8 +27,11 @@ public class IguanaJsonReader {
                 reader.beginObject();
                 while(reader.hasNext()) {
                     String name = reader.nextName();
-                    if(name.equalsIgnoreCase("block")) {
-                        blockName = reader.nextString();
+                    if(name.equalsIgnoreCase("name")) {
+                        objName = reader.nextString();
+                    } else if(name.equalsIgnoreCase("block")) {
+                        IguanaTweaks.log.warn("The \"block\" key in the weights.json file has been deprecated. Change it to \"name\"");
+                        objName = reader.nextString();
                     } else if(name.equalsIgnoreCase("weight")) {
                         weight = reader.nextDouble();
                     } else {
@@ -36,7 +39,7 @@ public class IguanaJsonReader {
                     }
                 }
                 reader.endObject();
-                weights.put(blockName, weight);
+                weights.put(objName, weight);
             }
             reader.endArray();
         } catch(Exception e) {

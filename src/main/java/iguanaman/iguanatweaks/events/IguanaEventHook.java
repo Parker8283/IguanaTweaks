@@ -20,6 +20,7 @@ import net.minecraft.entity.player.EntityPlayer.EnumStatus;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
@@ -194,13 +195,13 @@ public class IguanaEventHook {
                                 double toAdd;
 
                                 ItemStack stack = slot.getStack();
-                                Block block = Block.getBlockFromItem(stack.getItem());
 
-                                if(block != null) {
-                                    toAdd = IguanaWeightsConfig.getBlockWeight(block) * (double)IguanaConfig.rockWeight;
-                                } else { //is item
-                                    toAdd = 1d / 64d;
+                                toAdd = IguanaWeightsConfig.getWeight(stack);
+
+                                if(stack.getItem() instanceof ItemBlock) {
+                                    toAdd *= (double)IguanaConfig.rockWeight;
                                 }
+
                                 weight += toAdd * (double)stack.stackSize;
                             }
                         }
@@ -587,7 +588,7 @@ public class IguanaEventHook {
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if(event.showAdvancedItemTooltips) {
-            event.toolTip.add("Weight: " + IguanaWeightsConfig.getBlockWeight(Block.getBlockFromItem(event.itemStack.getItem())));
+            event.toolTip.add("Weight: " + IguanaWeightsConfig.getWeight(event.itemStack));
         }
     }
 }
