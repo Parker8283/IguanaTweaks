@@ -64,28 +64,5 @@ public class StackSizeTweaks {
                 }
             }
         }
-
-        // ITEMS
-        /*if(IguanaConfig.itemStackSizeDivider > 1) {
-            IguanaTweaks.log.info("Reducing item stack sizes");
-            for(Object obj : Item.itemRegistry) {
-                if(obj instanceof Item) {
-                    Item item = (Item)obj;
-                    if(!item.getUnlocalizedName().startsWith("tile.")) {
-                        ItemStack stack = new ItemStack(item);
-                        int size = item.getItemStackLimit(stack) / IguanaConfig.itemStackSizeDivider;
-                        if(size < 1)
-                            size = 1;
-                        if(size > 64)
-                            size = 64;
-                        if(size < item.getItemStackLimit(stack)) {
-                            if(IguanaConfig.logStackSizeChanges)
-                                IguanaTweaks.log.info("Reducing stack size of item " + item.getUnlocalizedName() + " to " + size);
-                            item.setMaxStackSize(size);
-                        }
-                    }
-                }
-            }
-        }*/
     }
 }
