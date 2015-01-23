@@ -375,11 +375,11 @@ public class IguanaEventHook {
                             color = "\u00A7e";
 
                         if(totalEncumberance >= 30) {
-                            line = "Greatly encumbered";
+                            line = I18n.format("hud.encumberance.greatly");
                         } else if(totalEncumberance >= 20) {
-                            line = "Encumbered";
+                            line = I18n.format("hud.encumberance.average");
                         } else if(totalEncumberance >= 10) {
-                            line = "Slightly encumbered";
+                            line = I18n.format("hud.encumberance.slightly");
                         }
                     }
 
