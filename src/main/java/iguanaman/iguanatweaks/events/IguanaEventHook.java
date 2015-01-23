@@ -12,6 +12,7 @@ import net.minecraft.client.entity.EntityClientPlayerMP;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
@@ -340,7 +341,7 @@ public class IguanaEventHook {
             EntityPlayer player = mc.thePlayer;
 
             if(IguanaConfig.showCreativeText && !mc.gameSettings.showDebugInfo && player.capabilities.isCreativeMode) {
-                event.left.add("Creative Mode");
+                event.left.add(I18n.format("gameMode.creative"));
             }
 
             if(IguanaTweaks.entityDataMap.containsKey(player.getUniqueID())) {
@@ -348,7 +349,7 @@ public class IguanaEventHook {
 
                 if(mc.gameSettings.showDebugInfo && IguanaConfig.addEncumbranceDebugText) {
                     event.left.add("");
-                    event.left.add("Weight: " + String.format("%.2f", playerWeightValues.currentWeight) + " / " + String.format("%.2f", playerWeightValues.maxWeight) + " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)");
+                    event.left.add(I18n.format("hud.weight") + ": " + String.format("%.2f", playerWeightValues.currentWeight) + " / " + String.format("%.2f", playerWeightValues.maxWeight) + " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)");
                 } else if(!player.isDead && !player.capabilities.isCreativeMode && IguanaConfig.addEncumbranceHudText) {
                     String color = "\u00A7f";
 
@@ -362,7 +363,7 @@ public class IguanaEventHook {
                         else if(playerWeightValues.encumberance >= 10)
                             color = "\u00A7e";
 
-                        line = "Weight: " + Double.toString(Math.round(playerWeightValues.currentWeight)) + " / " + Double.toString(Math.round(playerWeightValues.maxWeight)) + " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)";
+                        line = I18n.format("hud.weight") + ": " + Double.toString(Math.round(playerWeightValues.currentWeight)) + " / " + Double.toString(Math.round(playerWeightValues.maxWeight)) + " (" + String.format("%.2f", playerWeightValues.encumberance) + "%)";
                     } else {
                         double totalEncumberance = playerWeightValues.encumberance + playerWeightValues.armour;
 
@@ -588,7 +589,7 @@ public class IguanaEventHook {
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
         if(event.showAdvancedItemTooltips) {
-            event.toolTip.add("Weight: " + IguanaWeightsConfig.getWeight(event.itemStack));
+            event.toolTip.add(I18n.format("hud.weight") + ": " + IguanaWeightsConfig.getWeight(event.itemStack));
         }
     }
 }
