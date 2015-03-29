@@ -588,7 +588,7 @@ public class IguanaEventHook {
     @SideOnly(Side.CLIENT)
     @SubscribeEvent
     public void onItemTooltip(ItemTooltipEvent event) {
-        if(event.showAdvancedItemTooltips) {
+        if(!IguanaConfig.disableWeightsTooltip && event.showAdvancedItemTooltips) {
             event.toolTip.add(I18n.format("hud.weight") + ": " + IguanaWeightsConfig.getWeight(event.itemStack));
         }
     }

@@ -103,6 +103,7 @@ public class IguanaConfig {
     public static int torchesPerCoal;
     public static int miningExhaustionPercentage;
     public static int tickRateEntityUpdate;
+    public static boolean disableWeightsTooltip;
 
     public static void init(File file) {
         if(config == null) {
@@ -466,6 +467,11 @@ public class IguanaConfig {
         tickRateEntityUpdateProperty.comment = "How often the speed of entities are calculated (in ticks).  Higher values reduce client-side CPU load but increase the chance of odd behavior";
         tickRateEntityUpdate = Math.max(tickRateEntityUpdateProperty.getInt(5), 1);
         tickRateEntityUpdateProperty.set(tickRateEntityUpdate);
+
+        Property disableWeightsTooltipProperty = config.get("other", "disableWeightsTooltip", false);
+        disableWeightsTooltipProperty.comment = "With F3+H mode enabled, the weight of an object is displayed on its tooltip. Set this to true to disable that.";
+        disableWeightsTooltip = disableWeightsTooltipProperty.getBoolean(false);
+        disableWeightsTooltipProperty.set(disableWeightsTooltip);
 
         // restrictions
         Property restrictedDropsProperty = config.get("droprestrictions", "restrictedDrops", new String[]{});
