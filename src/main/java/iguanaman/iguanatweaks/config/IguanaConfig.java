@@ -72,7 +72,7 @@ public class IguanaConfig {
     public static int terrainSlowdownOnSnow;
     public static int terrainSlowdownInSnow;
     public static int terrainSlowdownInPlant;
-    public static int rockWeight;
+    public static double rockWeight;
 
     // item entity lifespans
     public static int itemLifespan;
@@ -336,9 +336,9 @@ public class IguanaConfig {
         terrainSlowdownInPlant = Math.max(terrainSlowdownInPlantProperty.getInt(5), 0);
         terrainSlowdownInPlantProperty.set(terrainSlowdownInPlant);
 
-        Property rockWeightProperty = config.get("movementrestriction", "rockWeight", 1);
+        Property rockWeightProperty = config.get("movementrestriction", "rockWeight", 1.0D);
         rockWeightProperty.comment = "Weight of one rock block, used as a base to calculate weight of other blocks";
-        rockWeight = Math.max(rockWeightProperty.getInt(1), 1);
+        rockWeight = Math.max(rockWeightProperty.getDouble(1.0D), 1);
         rockWeightProperty.set(rockWeight);
 
 

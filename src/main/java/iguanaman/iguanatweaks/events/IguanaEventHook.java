@@ -200,7 +200,7 @@ public class IguanaEventHook {
                                 toAdd = IguanaWeightsConfig.getWeight(stack);
 
                                 if(stack.getItem() instanceof ItemBlock) {
-                                    toAdd *= (double)IguanaConfig.rockWeight;
+                                    toAdd *= IguanaConfig.rockWeight;
                                 }
 
                                 weight += toAdd * (double)stack.stackSize;
