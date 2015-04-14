@@ -35,7 +35,6 @@ import iguanaman.iguanatweaks.events.IguanaTickHandler;
 import iguanaman.iguanatweaks.proxy.CommonProxy;
 import iguanaman.iguanatweaks.util.RecipeRemover;
 import iguanaman.iguanatweaks.util.StackSizeTweaks;
-import iguanaman.iguanatweaks.util.UpdateChecker;
 
 @Mod(modid = ModInfo.MODID, name = ModInfo.MOD_NAME, version = ModInfo.VERSION, dependencies = ModInfo.DEPENDENCIES, guiFactory = ModInfo.MOD_GUI_FACTORY)
 public class IguanaTweaks {
@@ -49,8 +48,6 @@ public class IguanaTweaks {
     public static CommonProxy proxy;
 
     public static Logger log;
-
-    public UpdateChecker.Result result;
 
     public static Potion poisonNew;
     public static Potion slowdownNew;

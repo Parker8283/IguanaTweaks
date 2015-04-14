@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10-Beta-19"
+version = "2A"
 group = "iguanaman" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "IguanaTweaks"
 
@@ -27,7 +27,6 @@ minecraft {
     
     replaceIn "ModInfo.java"
     replace "@MOD_VERSION@", project.version
-    replace "@IS_RELEASE@", "false"
 }
 
 processResources
@@ -54,4 +53,5 @@ jar {
     manifest {
         attributes "FMLAT": "IguanaTweaks_at.cfg"
     }
+    version = "${project.minecraft.version}-${project.version}"
 }
