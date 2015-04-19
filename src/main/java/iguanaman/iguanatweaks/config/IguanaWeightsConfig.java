@@ -11,7 +11,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import iguanaman.iguanatweaks.IguanaTweaks;
 import iguanaman.iguanatweaks.util.IguanaJsonReader;
 
@@ -45,7 +44,7 @@ public class IguanaWeightsConfig {
      */
     public static double getWeight(ItemStack stack) {
         if(weights != null && weights.containsKey(Item.itemRegistry.getNameForObject(stack.getItem()))) {
-            return weights.get(GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString());
+            return weights.get(Item.itemRegistry.getNameForObject(stack.getItem()));
         } else {
             return getDefaultWeight(stack);
         }
