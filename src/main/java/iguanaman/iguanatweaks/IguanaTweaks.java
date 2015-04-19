@@ -40,7 +40,7 @@ import iguanaman.iguanatweaks.util.StackSizeTweaks;
 public class IguanaTweaks {
 
     // The instance of your mod that Forge uses.
-    @Instance("IguanaTweaks")
+    @Instance(ModInfo.MODID)
     public static IguanaTweaks instance;
 
     // Says where the client and server 'proxy' code is loaded.

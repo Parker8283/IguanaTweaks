@@ -129,7 +129,7 @@ public class IguanaPlayerHandler {
                     }
 
                     //destroy bed
-                    event.player.worldObj.func_147480_a(x, bedLoc.posY, z, false);
+                    event.player.worldObj.breakBlock(x, bedLoc.posY, z, false);
                     event.player.setSpawnChunk(null, false, event.player.dimension);
                     if(IguanaConfig.respawnLocationRandomisationMax == 0) {
                         event.player.addChatMessage(new ChatComponentTranslation("msg.bedGone"));

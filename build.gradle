@@ -17,41 +17,63 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "2A"
-group = "iguanaman" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+version = "2B"
+group = "iguanaman"
 archivesBaseName = "IguanaTweaks"
 
 minecraft {
-    version = "1.7.10-10.13.0.1185"
+    version = "1.7.10-10.13.2.1291"
     runDir = "run"
+    mappings = "stable_12"
     
     replaceIn "ModInfo.java"
     replace "@MOD_VERSION@", project.version
 }
 
-processResources
-{
-    // this will ensure that this task is redone when the versions change.
+task buildInfo {
+    def cmd = "git rev-parse HEAD"
+    def proc = cmd.execute()
+    proc.waitFor()
+    if(proc.exitValue() == 0) {
+        ext.hash = proc.text.trim()
+        ext.revision = ext.hash.substring(0, 7)
+    } else {
+        ext.hash = ext.revision = "GITBORK"
+    }
+    if(project.hasProperty("buildType")) {
+        if (buildType.equals("SNAPSHOT")) {
+            if (System.getenv().DRONE_BUILD_NUMBER == null) {
+                println "Not in drone.io. Reverting to dev buildType"
+                project.version += "-DEV-" + ext.revision
+            } else {
+                project.version += "-snapshot-" + System.getenv().DRONE_BUILD_NUMBER
+            }
+        } else if (!buildType.equals("RELEASE")) {
+            project.version += "-DEV-" + ext.revision
+        }
+    } else {
+        project.version += "-DEV-" + ext.revision
+    }
+}
+
+processResources {
     inputs.property "version", project.version
     inputs.property "mcversion", project.minecraft.version
 
-    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
-        include 'mcmod.info'
-                
-        // replace version and mcversion
+        include '*.info'
         expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-        
-    // copy everything else, thats not the mcmod.info
+
     from(sourceSets.main.resources.srcDirs) {
-        exclude 'mcmod.info'
+        exclude '*.info'
     }
 }
 
 jar {
     manifest {
-        attributes "FMLAT": "IguanaTweaks_at.cfg"
+        attributes "FMLAT": "IguanaTweaks_at.cfg",
+                "Git-Hash": project.buildInfo.hash
     }
     version = "${project.minecraft.version}-${project.version}"
 }
