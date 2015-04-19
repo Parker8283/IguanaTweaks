@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -43,7 +44,7 @@ public class IguanaWeightsConfig {
      * @return The weight of the block as a double
      */
     public static double getWeight(ItemStack stack) {
-        if(weights != null && weights.containsKey(GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString())) {
+        if(weights != null && weights.containsKey(Item.itemRegistry.getNameForObject(stack.getItem()))) {
             return weights.get(GameRegistry.findUniqueIdentifierFor(stack.getItem()).toString());
         } else {
             return getDefaultWeight(stack);
