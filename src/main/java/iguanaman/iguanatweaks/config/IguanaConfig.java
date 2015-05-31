@@ -344,7 +344,7 @@ public class IguanaConfig {
         rockWeightProperty.set(rockWeight);
 
         Property itemWeightProperty = config.get("movementrestriction", "itemWeight", 0.015625D);
-        itemWeightProperty.comment = "Weight of a default item";
+        itemWeightProperty.comment = "Default weight of an Item";
         itemWeight = Math.max(itemWeightProperty.getDouble(0.015625D), 0);
         itemWeightProperty.set(itemWeight);
 
