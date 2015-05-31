@@ -52,7 +52,7 @@ public class IguanaWeightsConfig {
 
     private static double getDefaultWeight(ItemStack stack) {
         if(!(stack.getItem() instanceof ItemBlock)) {
-            return 1D / 64D;
+            return 1.0D * (double)IguanaConfig.itemWeight;
         }
 
         Block block = Block.getBlockFromItem(stack.getItem());
