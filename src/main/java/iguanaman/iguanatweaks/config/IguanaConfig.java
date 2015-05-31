@@ -73,6 +73,7 @@ public class IguanaConfig {
     public static int terrainSlowdownInSnow;
     public static int terrainSlowdownInPlant;
     public static double rockWeight;
+    public static double itemWeight;
 
     // item entity lifespans
     public static int itemLifespan;
@@ -342,6 +343,10 @@ public class IguanaConfig {
         rockWeight = Math.max(rockWeightProperty.getDouble(1.0D), 1);
         rockWeightProperty.set(rockWeight);
 
+        Property itemWeightProperty = config.get("movementrestriction", "itemWeight", 0.015625D);
+        itemWeightProperty.comment = "Default weight of an Item";
+        itemWeight = Math.max(itemWeightProperty.getDouble(0.015625D), 0);
+        itemWeightProperty.set(itemWeight);
 
         // item lifespans
         ConfigCategory itemlifespansCategory = config.getCategory("itemlifespans");
