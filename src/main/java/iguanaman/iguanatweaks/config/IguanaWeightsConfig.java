@@ -43,7 +43,7 @@ public class IguanaWeightsConfig {
      * @return The weight of the block as a double
      */
     public static double getWeight(ItemStack stack) {
-        if(weights != null && weights.containsKey(Item.itemRegistry.getNameForObject(stack.getItem()))) {
+        if(weights != null && stack.getItem() != null && Item.itemRegistry.getNameForObject(stack.getItem()) != null && weights.containsKey(Item.itemRegistry.getNameForObject(stack.getItem()))) {
             return weights.get(Item.itemRegistry.getNameForObject(stack.getItem()));
         } else {
             return getDefaultWeight(stack);
