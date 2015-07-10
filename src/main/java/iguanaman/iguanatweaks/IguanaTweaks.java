@@ -90,8 +90,8 @@ public class IguanaTweaks {
         if(IguanaConfig.torchesPerCoal != 4) {
             log.info("Changing torch recipe output");
             RecipeRemover.removeAnyRecipe(new ItemStack(Blocks.torch, 4));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), "c", "s", 'c', new ItemStack(Items.coal), 's', new ItemStack(Items.stick)));
-            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), "c", "s", 'c', new ItemStack(Items.coal, 1, 1), 's', new ItemStack(Items.stick)));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), "c", "s", 'c', new ItemStack(Items.coal), 's', "stickWood"));
+            GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Blocks.torch, IguanaConfig.torchesPerCoal), "c", "s", 'c', new ItemStack(Items.coal, 1, 1), 's', "stickWood"));
         }
     }
 
